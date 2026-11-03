@@ -171,34 +171,54 @@ public class MainActivity extends Activity {
             return;
         }
         if (requestCode == REQ_PICK) {
-            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
-                Uri uri = data.getData();
-                try {
-                    getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
-                } catch (Exception ignored) {
-                }
-                String name = "";
-                Cursor c = null;
-                try {
-                    c = getContentResolver().query(uri, null, null, null, null);
-                    if (c != null && c.moveToFirst()) {
-                        int idx = c.getColumnIndex(OpenableColumns.DISPLAY_NAME);
-                        if (idx >= 0) name = c.getString(idx);
+            if (resultCode == RESULT_OK && data != null) {
+                ArrayList<Uri> uris = new ArrayList<Uri>();
+                if (data.getClipData() != null) {
+                    for (int k = 0; k < data.getClipData().getItemCount(); k++) {
+                        Uri u = data.getClipData().getItemAt(k).getUri();
+                        if (u != null) uris.add(u);
                     }
-                } catch (Exception ignored) {
-                } finally {
-                    if (c != null) c.close();
+                } else if (data.getData() != null) {
+                    uris.add(data.getData());
                 }
-                String mime = getContentResolver().getType(uri);
-                if (mime == null) mime = "*/*";
-                final String js = "window.onPicked && window.onPicked(" + JSONObject.quote(uri.toString()) + ","
-                        + JSONObject.quote(name == null ? "" : name) + "," + JSONObject.quote(mime) + ");";
-                web.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        web.evaluateJavascript(js, null);
+                JSONArray arr = new JSONArray();
+                for (Uri uri : uris) {
+                    try {
+                        getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                    } catch (Exception ignored) {
                     }
-                });
+                    String name = "";
+                    Cursor c = null;
+                    try {
+                        c = getContentResolver().query(uri, null, null, null, null);
+                        if (c != null && c.moveToFirst()) {
+                            int idx = c.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                            if (idx >= 0) name = c.getString(idx);
+                        }
+                    } catch (Exception ignored) {
+                    } finally {
+                        if (c != null) c.close();
+                    }
+                    String mime = getContentResolver().getType(uri);
+                    if (mime == null) mime = "*/*";
+                    try {
+                        JSONObject o = new JSONObject();
+                        o.put("u", uri.toString());
+                        o.put("n", name == null ? "" : name);
+                        o.put("m", mime);
+                        arr.put(o);
+                    } catch (Exception ignored) {
+                    }
+                }
+                if (arr.length() > 0) {
+                    final String js = "window.onPickedMulti && window.onPickedMulti(" + arr.toString() + ");";
+                    web.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            web.evaluateJavascript(js, null);
+                        }
+                    });
+                }
             }
             return;
         }
@@ -266,6 +286,7 @@ public class MainActivity extends Activity {
                         Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
                         i.addCategory(Intent.CATEGORY_OPENABLE);
                         i.setType("*/*");
+                        i.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
                         i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
                         startActivityForResult(i, REQ_PICK);
                     } catch (Exception ignored) {

@@ -22,6 +22,9 @@ h1{flex:1;margin:0;font-size:22px;color:var(--y)}
 [dir=rtl] .vt button:first-child{border-radius:0 10px 10px 0}
 [dir=rtl] .vt button:last-child{border-radius:10px 0 0 10px}
 .vt button.on{background:var(--y);color:#0B1B3A;border-color:var(--y);font-weight:700}
+.approw.sel{border-color:var(--y);background:var(--card2)}
+.chk{font-size:20px;color:var(--y);flex:none}
+#ovApps .btns{position:sticky;bottom:-16px;background:var(--bg);padding:10px 0 4px;margin-top:8px}
 .approw{display:flex;align-items:center;gap:12px;padding:8px 12px}
 .approw img{width:36px;height:36px;border-radius:8px;flex:none}
 .chips{display:flex;gap:6px;overflow-x:auto;padding:7px 0 3px}
@@ -141,9 +144,9 @@ textarea.f{min-height:90px;resize:vertical}
 
 <div class="ov" id="ovApps"><div class="sheet">
   <h2 id="aTitle"></h2>
-  <input class="f" id="aSearch" type="search" autocomplete="off">
+  <div class="addrow"><input class="f" id="aSearch" type="search" autocomplete="off"><button id="aAll"></button></div>
   <div id="aList" style="margin-top:8px"></div>
-  <div class="btns"><button id="aClose"></button></div>
+  <div class="btns"><button id="aClose"></button><button class="pri" id="aOk"></button></div>
 </div></div>
 
 <div class="ov" id="ovConfirm"><div class="sheet">
@@ -163,7 +166,7 @@ save:'Enregistrer',cancel:'Annuler',open:'Ouvrir',copy:'Copier',del:'Supprimer',
 copied:'Lien copié',saved:'Enregistré',deleted:'Supprimé',invalid:'Adresse invalide',dup:'Ce lien existe déjà',
 empty:'Aucun lien pour le moment.<br>Appuyez sur + ou utilisez « Partager » depuis une autre application.',
 sRecent:'Plus récents',sAlpha:'A → Z',sCat:'Par catégorie',menu:'Menu',export:'Exporter (sauvegarde)',import:'Importer une sauvegarde',cats:'Gérer les catégories',
-pick:'📁 Choisir un fichier du téléphone',unpick:'🌐 Utiliser plutôt une adresse web',det:'De quoi s’agit-il ?',editBtn:'Modifier',vMany:'Plusieurs liens trouvés pour',pickApp:'📲 Choisir une application du téléphone',appSearch:'Rechercher une application…',vtLab:'🎤 Chercher dans :',vtApp:'📱 Mes liens',vtG:'🌐 Google',vNone:'Aucun lien trouvé pour',vSearch:'🎤 Recherche Google : ',voiceFail:'Rien entendu, réessayez',voiceNA:'Voix indisponible',pin:'🎤 Raccourci vocal sur l’écran d’accueil',catNewPh:'Nom de la nouvelle catégorie',catAdd:'Ajouter',catExists:'Cette catégorie existe déjà',close:'Fermer',importTitle:'Importer',chooseFile:'Choisir un fichier',paste:'… ou coller le contenu ici',go:'Importer',imported:'lien(s) ajouté(s)',bad:'Fichier non valide',
+pick:'📁 Choisir des fichiers du téléphone',unpick:'🌐 Utiliser plutôt une adresse web',det:'De quoi s’agit-il ?',editBtn:'Modifier',vMany:'Plusieurs liens trouvés pour',pickApp:'📲 Choisir des applications du téléphone',dupN:'déjà présent(s)',appSearch:'Rechercher une application…',vtLab:'🎤 Chercher dans :',vtApp:'📱 Mes liens',vtG:'🌐 Google',vNone:'Aucun lien trouvé pour',vSearch:'🎤 Recherche Google : ',voiceFail:'Rien entendu, réessayez',voiceNA:'Voix indisponible',pin:'🎤 Raccourci vocal sur l’écran d’accueil',catNewPh:'Nom de la nouvelle catégorie',catAdd:'Ajouter',catExists:'Cette catégorie existe déjà',close:'Fermer',importTitle:'Importer',chooseFile:'Choisir un fichier',paste:'… ou coller le contenu ici',go:'Importer',imported:'lien(s) ajouté(s)',bad:'Fichier non valide',
 links:'lien(s)',catDelq:'Supprimer cette catégorie ? Ses liens passeront dans « Divers ».'},
 ar:{title:'روابطي',search:'ابحث عن رابط…',all:'الكل',favs:'★ المفضلة',add:'إضافة رابط',edit:'تعديل الرابط',
 url:'العنوان (URL)',name:'العنوان',desc:'ما هو موضوعه؟',cat:'الفئة',newcat:'+ فئة جديدة…',newcatph:'اسم الفئة',tags:'وسوم (مفصولة بفواصل)',
@@ -171,7 +174,7 @@ save:'حفظ',cancel:'إلغاء',open:'فتح',copy:'نسخ',del:'حذف',delq:
 copied:'تم نسخ الرابط',saved:'تم الحفظ',deleted:'تم الحذف',invalid:'عنوان غير صالح',dup:'هذا الرابط موجود مسبقاً',
 empty:'لا توجد روابط حالياً.<br>اضغط + أو استعمل «مشاركة» من تطبيق آخر.',
 sRecent:'الأحدث',sAlpha:'أ → ي',sCat:'حسب الفئة',menu:'القائمة',export:'تصدير (نسخة احتياطية)',import:'استيراد نسخة احتياطية',cats:'إدارة الفئات',
-pick:'📁 اختيار ملف من الهاتف',unpick:'🌐 استعمال عنوان ويب بدلاً من ذلك',det:'ما هو موضوعه؟',editBtn:'تعديل',vMany:'عدة روابط لـ',pickApp:'📲 اختيار تطبيق من الهاتف',appSearch:'ابحث عن تطبيق…',vtLab:'🎤 البحث في:',vtApp:'📱 روابطي',vtG:'🌐 غوغل',vNone:'لا يوجد رابط لـ',vSearch:'🎤 بحث في غوغل: ',voiceFail:'لم أسمع شيئاً، أعد المحاولة',voiceNA:'الصوت غير متاح',pin:'🎤 اختصار صوتي على الشاشة الرئيسية',catNewPh:'اسم الفئة الجديدة',catAdd:'إضافة',catExists:'هذه الفئة موجودة مسبقاً',close:'إغلاق',importTitle:'استيراد',chooseFile:'اختيار ملف',paste:'… أو الصق المحتوى هنا',go:'استيراد',imported:'رابط مضاف',bad:'ملف غير صالح',
+pick:'📁 اختيار ملفات من الهاتف',unpick:'🌐 استعمال عنوان ويب بدلاً من ذلك',det:'ما هو موضوعه؟',editBtn:'تعديل',vMany:'عدة روابط لـ',pickApp:'📲 اختيار تطبيقات من الهاتف',dupN:'موجود مسبقاً',appSearch:'ابحث عن تطبيق…',vtLab:'🎤 البحث في:',vtApp:'📱 روابطي',vtG:'🌐 غوغل',vNone:'لا يوجد رابط لـ',vSearch:'🎤 بحث في غوغل: ',voiceFail:'لم أسمع شيئاً، أعد المحاولة',voiceNA:'الصوت غير متاح',pin:'🎤 اختصار صوتي على الشاشة الرئيسية',catNewPh:'اسم الفئة الجديدة',catAdd:'إضافة',catExists:'هذه الفئة موجودة مسبقاً',close:'إغلاق',importTitle:'استيراد',chooseFile:'اختيار ملف',paste:'… أو الصق المحتوى هنا',go:'استيراد',imported:'رابط مضاف',bad:'ملف غير صالح',
 links:'رابط',catDelq:'حذف هذه الفئة؟ ستنتقل روابطها إلى «Divers».'}
 };
 const NETS=[
@@ -313,27 +316,63 @@ $('#fPick').onclick=()=>{
   if(pend){pend=null;setFileUI();return;}
   if(window.Android&&Android.pickFile)Android.pickFile();
 };
-let APPS=null;
+let APPS=null,SEL=new Set();
+function bulkCat(){
+  let c=catTouched?$('#fCat').value:'Mobile';
+  if(!c||c==='__new')c='Mobile';
+  if(!S.cats.includes(c))S.cats.push(c);
+  return c;
+}
+function addBulk(items){
+  const cat=bulkCat();let n=0,dup=0;const now=Date.now();
+  items.forEach((it,i)=>{
+    if(S.links.some(x=>x.url===it.url)){dup++;return;}
+    S.links.push(Object.assign({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6)+i,fav:false,created:now-i,desc:'',tags:[],cat,file:false,app:false,pkg:'',icon:'',mime:'',fname:''},it));
+    n++;
+  });
+  save();hide('#ovForm');render();
+  toast(n+' '+t('imported')+(dup?' · '+dup+' '+t('dupN'):''));
+}
+function appsVisible(){const q=norm($('#aSearch').value);return APPS.filter(a=>!q||norm(a.n).includes(q));}
+function updApps(){
+  const n=SEL.size;$('#aOk').textContent=t('catAdd')+(n?' ('+n+')':'');$('#aOk').disabled=!n;$('#aOk').style.opacity=n?1:.5;
+  $('#aAll').textContent='☑ '+t('all');
+}
+function renderApps(){
+  $('#aList').innerHTML=appsVisible().map(a=>`<button class="mi approw${SEL.has(a.p)?' sel':''}" data-p="${esc(a.p)}"><span class="chk">${SEL.has(a.p)?'☑':'☐'}</span><img src="${a.i}"><span>${esc(a.n)}</span></button>`).join('')||'<div class="empty">—</div>';
+  updApps();
+}
 $('#fPickApp').onclick=()=>{
   if(!(window.Android&&Android.getApps)){toast(t('voiceNA'));return;}
   if(!APPS){try{APPS=JSON.parse(Android.getApps());}catch(e){APPS=[];}APPS.sort((a,b)=>a.n.localeCompare(b.n));}
-  $('#aSearch').value='';renderApps();show('#ovApps');
+  SEL=new Set();$('#aSearch').value='';renderApps();show('#ovApps');
 };
-function renderApps(){
-  const q=norm($('#aSearch').value);
-  $('#aList').innerHTML=APPS.filter(a=>!q||norm(a.n).includes(q)).map(a=>`<button class="mi approw" data-p="${esc(a.p)}"><img src="${a.i}"><span>${esc(a.n)}</span></button>`).join('')||'<div class="empty">—</div>';
-}
 $('#aSearch').addEventListener('input',renderApps);
 $('#aClose').onclick=()=>hide('#ovApps');
+$('#aAll').onclick=()=>{const v=appsVisible();const all=v.length&&v.every(a=>SEL.has(a.p));v.forEach(a=>all?SEL.delete(a.p):SEL.add(a.p));renderApps();};
 $('#aList').addEventListener('click',e=>{
   const b=e.target.closest('button');if(!b)return;
-  const a=APPS.find(x=>x.p===b.dataset.p);if(!a)return;
-  hide('#ovApps');
-  pend={uri:'app://'+a.p,app:true,pkg:a.p,fname:a.n,icon:a.i};
-  setFileUI();
-  if(!$('#fName').value.trim())$('#fName').value=a.n;
-  if(S.cats.includes('Mobile')){$('#fCat').value='Mobile';catTouched=true;$('#fNewCat').style.display='none';}
+  const p=b.dataset.p;if(SEL.has(p))SEL.delete(p);else SEL.add(p);
+  b.classList.toggle('sel',SEL.has(p));b.querySelector('.chk').textContent=SEL.has(p)?'☑':'☐';updApps();
 });
+$('#aOk').onclick=()=>{
+  const chosen=APPS.filter(a=>SEL.has(a.p));if(!chosen.length)return;
+  hide('#ovApps');
+  if(chosen.length===1){
+    const a=chosen[0];
+    pend={uri:'app://'+a.p,app:true,pkg:a.p,fname:a.n,icon:a.i};
+    setFileUI();
+    if(!$('#fName').value.trim())$('#fName').value=a.n;
+    if(S.cats.includes('Mobile')){$('#fCat').value='Mobile';catTouched=true;$('#fNewCat').style.display='none';}
+    return;
+  }
+  addBulk(chosen.map(a=>({url:'app://'+a.p,title:a.n,app:true,pkg:a.p,icon:a.i,fname:a.n})));
+};
+window.onPickedMulti=function(arr){
+  if(!Array.isArray(arr)||!arr.length)return;
+  if(arr.length===1){window.onPicked(arr[0].u,arr[0].n,arr[0].m);return;}
+  addBulk(arr.map(x=>({url:x.u,title:String(x.n||'Fichier').replace(/\.[^.]{1,5}$/,''),file:true,mime:x.m||'',fname:x.n||''})));
+};
 window.onPicked=function(uri,name,mime){
   pend={uri,mime,fname:name};
   setFileUI();
