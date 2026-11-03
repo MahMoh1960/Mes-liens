@@ -1,0 +1,327 @@
+<!DOCTYPE html>
+<html lang="fr" dir="ltr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Mes Liens</title>
+<style>
+:root{--bg:#0B1B3A;--card:#12264d;--card2:#183163;--y:#FFD60A;--t:#F4F1E6;--m:#9fb0d0;--line:#243a6b;--danger:#ff6b6b}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent}
+html,body{margin:0;height:100%}
+body{background:var(--bg);color:var(--t);font-family:system-ui,'Noto Naskh Arabic',sans-serif;font-size:16px;display:flex;flex-direction:column}
+header{padding:12px 14px 8px;background:var(--bg);position:sticky;top:0;z-index:5}
+.top{display:flex;align-items:center;gap:8px}
+h1{flex:1;margin:0;font-size:22px;color:var(--y)}
+.ib{background:var(--card);border:1px solid var(--line);color:var(--y);border-radius:12px;min-width:42px;height:42px;font-size:16px;font-weight:700}
+.search{width:100%;margin-top:10px;padding:12px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--t);font-size:16px}
+.chips{display:flex;gap:8px;overflow-x:auto;padding:10px 0 4px}
+.chip{flex:none;padding:7px 14px;border-radius:20px;border:1px solid var(--line);background:var(--card);color:var(--t);font-size:14px}
+.chip.on{background:var(--y);color:#0B1B3A;border-color:var(--y);font-weight:700}
+.bar{display:flex;align-items:center;justify-content:space-between;color:var(--m);font-size:13px;padding-top:4px}
+select,input,textarea{font-family:inherit}
+.sort{background:var(--card);color:var(--t);border:1px solid var(--line);border-radius:10px;padding:6px 8px;font-size:13px}
+main{flex:1;overflow-y:auto;padding:6px 14px 100px}
+.card{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:12px;margin:10px 0}
+.row{display:flex;gap:12px;align-items:flex-start}
+.badge{flex:none;width:44px;height:44px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-weight:800;font-size:16px;border:1px solid var(--line)}
+.main{flex:1;min-width:0}
+.title{font-weight:700;font-size:17px;color:var(--y);word-break:break-word}
+.desc{margin-top:4px;color:var(--t);font-size:15px;line-height:1.4;white-space:pre-wrap;word-break:break-word}
+.url{margin-top:4px;color:var(--m);font-size:12px;direction:ltr;text-align:start;word-break:break-all}
+.meta{margin-top:6px;display:flex;flex-wrap:wrap;gap:6px}
+.tag{font-size:12px;padding:2px 9px;border-radius:10px;background:var(--card2);color:var(--m)}
+.tag.cat{color:var(--y)}
+.star{background:none;border:0;color:var(--y);font-size:26px;padding:0 4px}
+.acts{display:flex;gap:6px;margin-top:10px;flex-wrap:wrap}
+.acts button{flex:1;min-width:70px;padding:8px 6px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--t);font-size:13px}
+.acts button.pri{background:var(--y);color:#0B1B3A;border-color:var(--y);font-weight:700}
+.acts button.del{color:var(--danger)}
+.empty{text-align:center;color:var(--m);margin-top:60px;line-height:1.6;padding:0 20px}
+.fab{position:fixed;inset-inline-end:18px;bottom:calc(18px + env(safe-area-inset-bottom));width:60px;height:60px;border-radius:30px;background:var(--y);color:#0B1B3A;border:0;font-size:34px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.5);z-index:6}
+.ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:20;display:none;align-items:flex-end;justify-content:center}
+.ov.show{display:flex}
+.sheet{background:var(--bg);border:1px solid var(--line);border-radius:20px 20px 0 0;width:100%;max-width:560px;max-height:92%;overflow-y:auto;padding:16px}
+.sheet h2{margin:0 0 12px;color:var(--y);font-size:19px}
+label{display:block;margin:10px 0 4px;color:var(--m);font-size:13px}
+.f{width:100%;padding:11px 12px;border-radius:10px;border:1px solid var(--line);background:var(--card);color:var(--t);font-size:16px}
+textarea.f{min-height:90px;resize:vertical}
+.btns{display:flex;gap:10px;margin-top:16px}
+.btns button{flex:1;padding:12px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--t);font-size:16px}
+.btns button.pri{background:var(--y);color:#0B1B3A;border-color:var(--y);font-weight:700}
+.mi{display:block;width:100%;text-align:start;padding:14px;margin:6px 0;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--t);font-size:16px}
+.crow{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;margin:6px 0;border-radius:10px;background:var(--card)}
+.crow button{background:none;border:0;color:var(--danger);font-size:20px}
+#toast{position:fixed;left:50%;bottom:100px;transform:translateX(-50%);background:var(--y);color:#0B1B3A;padding:10px 18px;border-radius:20px;font-weight:700;z-index:50;display:none;max-width:90%;text-align:center}
+</style>
+</head>
+<body>
+<header>
+  <div class="top">
+    <h1 id="hTitle">Mes Liens</h1>
+    <button class="ib" id="bLang">ع</button>
+    <button class="ib" id="bMenu">⋮</button>
+  </div>
+  <input class="search" id="q" type="search" autocomplete="off">
+  <div class="chips" id="chips"></div>
+  <div class="bar"><span id="count"></span>
+    <select class="sort" id="sort"></select>
+  </div>
+</header>
+<main id="list"></main>
+<button class="fab" id="fab">+</button>
+
+<div class="ov" id="ovForm"><div class="sheet">
+  <h2 id="fTitle"></h2>
+  <label id="lUrl"></label><input class="f" id="fUrl" inputmode="url" autocapitalize="off" autocomplete="off" style="direction:ltr;text-align:start">
+  <label id="lName"></label><input class="f" id="fName">
+  <label id="lDesc"></label><textarea class="f" id="fDesc"></textarea>
+  <label id="lCat"></label><select class="f" id="fCat"></select>
+  <input class="f" id="fNewCat" style="display:none;margin-top:8px">
+  <label id="lTags"></label><input class="f" id="fTags">
+  <div class="btns"><button id="fCancel"></button><button class="pri" id="fSave"></button></div>
+</div></div>
+
+<div class="ov" id="ovMenu"><div class="sheet">
+  <h2 id="mTitle"></h2>
+  <button class="mi" id="mExport"></button>
+  <button class="mi" id="mImport"></button>
+  <button class="mi" id="mCats"></button>
+  <div class="btns"><button id="mClose"></button></div>
+</div></div>
+
+<div class="ov" id="ovImport"><div class="sheet">
+  <h2 id="iTitle"></h2>
+  <label id="iFileL"></label><input type="file" id="iFile" accept=".json,.txt,application/json,text/plain" class="f">
+  <label id="iPasteL"></label><textarea class="f" id="iText" style="direction:ltr"></textarea>
+  <div class="btns"><button id="iCancel"></button><button class="pri" id="iGo"></button></div>
+</div></div>
+
+<div class="ov" id="ovCats"><div class="sheet">
+  <h2 id="cTitle"></h2>
+  <div id="cList"></div>
+  <div class="btns"><button id="cClose"></button></div>
+</div></div>
+
+<div class="ov" id="ovConfirm"><div class="sheet">
+  <h2 id="qText"></h2>
+  <div class="btns"><button id="qNo"></button><button class="pri" id="qYes"></button></div>
+</div></div>
+
+<div id="toast"></div>
+
+<script>
+const $=s=>document.querySelector(s);
+const DEF_CATS=['Google','X','Facebook','Recherche','Thèse','Enseignement','Divers'];
+const I18N={
+fr:{title:'Mes Liens',search:'Rechercher un lien…',all:'Tous',favs:'★ Favoris',add:'Ajouter un lien',edit:'Modifier le lien',
+url:'Adresse (URL)',name:'Titre',desc:'De quoi s’agit-il ?',cat:'Catégorie',newcat:'+ Nouvelle catégorie…',newcatph:'Nom de la catégorie',tags:'Étiquettes (séparées par des virgules)',
+save:'Enregistrer',cancel:'Annuler',open:'Ouvrir',copy:'Copier',del:'Supprimer',delq:'Supprimer ce lien ?',yes:'Oui',no:'Non',
+copied:'Lien copié',saved:'Enregistré',deleted:'Supprimé',invalid:'Adresse invalide',dup:'Ce lien existe déjà',
+empty:'Aucun lien pour le moment.<br>Appuyez sur + ou utilisez « Partager » depuis une autre application.',
+sRecent:'Plus récents',sAlpha:'A → Z',sCat:'Par catégorie',menu:'Menu',export:'Exporter (sauvegarde)',import:'Importer une sauvegarde',cats:'Gérer les catégories',
+close:'Fermer',importTitle:'Importer',chooseFile:'Choisir un fichier',paste:'… ou coller le contenu ici',go:'Importer',imported:'lien(s) ajouté(s)',bad:'Fichier non valide',
+links:'lien(s)',catDelq:'Supprimer cette catégorie ? Ses liens passeront dans « Divers ».'},
+ar:{title:'روابطي',search:'ابحث عن رابط…',all:'الكل',favs:'★ المفضلة',add:'إضافة رابط',edit:'تعديل الرابط',
+url:'العنوان (URL)',name:'العنوان',desc:'ما هو موضوعه؟',cat:'الفئة',newcat:'+ فئة جديدة…',newcatph:'اسم الفئة',tags:'وسوم (مفصولة بفواصل)',
+save:'حفظ',cancel:'إلغاء',open:'فتح',copy:'نسخ',del:'حذف',delq:'هل تريد حذف هذا الرابط؟',yes:'نعم',no:'لا',
+copied:'تم نسخ الرابط',saved:'تم الحفظ',deleted:'تم الحذف',invalid:'عنوان غير صالح',dup:'هذا الرابط موجود مسبقاً',
+empty:'لا توجد روابط حالياً.<br>اضغط + أو استعمل «مشاركة» من تطبيق آخر.',
+sRecent:'الأحدث',sAlpha:'أ → ي',sCat:'حسب الفئة',menu:'القائمة',export:'تصدير (نسخة احتياطية)',import:'استيراد نسخة احتياطية',cats:'إدارة الفئات',
+close:'إغلاق',importTitle:'استيراد',chooseFile:'اختيار ملف',paste:'… أو الصق المحتوى هنا',go:'استيراد',imported:'رابط مضاف',bad:'ملف غير صالح',
+links:'رابط',catDelq:'حذف هذه الفئة؟ ستنتقل روابطها إلى «Divers».'}
+};
+const NETS=[
+[/(^|\.)google\./,'Google','G','#4285F4','#fff'],
+[/(^|\.)(x|twitter)\.com$/,'X','X','#000','#fff'],
+[/(^|\.)(facebook\.com|fb\.com|fb\.watch|fb\.me)$/,'Facebook','f','#1877F2','#fff'],
+[/(^|\.)(youtube\.com|youtu\.be)$/,'YouTube','▶','#FF0000','#fff'],
+[/(^|\.)instagram\.com$/,'Instagram','◎','#E4405F','#fff'],
+[/(^|\.)linkedin\.com$/,'LinkedIn','in','#0A66C2','#fff'],
+[/(^|\.)(whatsapp\.com|wa\.me)$/,'WhatsApp','W','#25D366','#fff'],
+[/(^|\.)(t\.me|telegram\.org)$/,'Telegram','✈','#26A5E4','#fff'],
+[/(^|\.)tiktok\.com$/,'TikTok','♪','#111','#fff'],
+[/(^|\.)github\.com$/,'GitHub','GH','#333','#fff'],
+[/(^|\.)wikipedia\.org$/,'Wikipedia','W','#eee','#111'],
+[/(^|\.)researchgate\.net$/,'ResearchGate','RG','#00CCBB','#fff']
+];
+const KEY='meslinks_v1';
+function load(){try{const d=JSON.parse(localStorage.getItem(KEY));if(d&&Array.isArray(d.links))return Object.assign({links:[],cats:DEF_CATS.slice(),lang:'fr'},d);}catch(e){}return{links:[],cats:DEF_CATS.slice(),lang:'fr'};}
+let S=load();
+function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
+const t=k=>(I18N[S.lang]||I18N.fr)[k]||k;
+let V={q:'',cat:'',sort:'recent'};
+let editing=null,catTouched=false,confirmCb=null;
+
+const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
+function normUrl(u){u=String(u||'').trim();if(!u)return'';if(!/^[a-z][a-z0-9+.-]*:\/\//i.test(u))u='https://'+u;try{const x=new URL(u);if(!/^https?:$/.test(x.protocol))return'';if(!x.hostname.includes('.'))return'';return x.href;}catch(e){return'';}}
+function host(u){try{return new URL(u).hostname.replace(/^www\./,'');}catch(e){return u;}}
+function net(u){const h=host(u);for(const n of NETS){if(n[0].test(h))return{name:n[1],ab:n[2],bg:n[3],fg:n[4]};}return{name:'',ab:'🌐',bg:'#FFD60A',fg:'#0B1B3A'};}
+function toast(m){const e=$('#toast');e.textContent=m;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2000);}
+function show(id){$(id).classList.add('show');}
+function hide(id){$(id).classList.remove('show');}
+function anyOpen(){return document.querySelector('.ov.show');}
+
+function applyLang(){
+  document.documentElement.lang=S.lang;document.documentElement.dir=S.lang==='ar'?'rtl':'ltr';
+  $('#hTitle').textContent=t('title');$('#bLang').textContent=S.lang==='ar'?'FR':'ع';
+  $('#q').placeholder=t('search');
+  $('#sort').innerHTML=['recent:sRecent','alpha:sAlpha','cat:sCat'].map(x=>{const[a,b]=x.split(':');return`<option value="${a}"${V.sort===a?' selected':''}>${esc(t(b))}</option>`}).join('');
+  $('#lUrl').textContent=t('url');$('#lName').textContent=t('name');$('#lDesc').textContent=t('desc');$('#lCat').textContent=t('cat');$('#lTags').textContent=t('tags');
+  $('#fNewCat').placeholder=t('newcatph');$('#fCancel').textContent=t('cancel');$('#fSave').textContent=t('save');
+  $('#mTitle').textContent=t('menu');$('#mExport').textContent=t('export');$('#mImport').textContent=t('import');$('#mCats').textContent=t('cats');$('#mClose').textContent=t('close');
+  $('#iTitle').textContent=t('importTitle');$('#iFileL').textContent=t('chooseFile');$('#iPasteL').textContent=t('paste');$('#iCancel').textContent=t('cancel');$('#iGo').textContent=t('go');
+  $('#cTitle').textContent=t('cats');$('#cClose').textContent=t('close');
+  $('#qNo').textContent=t('no');$('#qYes').textContent=t('yes');
+}
+function render(){
+  const chips=[['',t('all')],['★',t('favs')]].concat(S.cats.map(c=>[c,c]));
+  $('#chips').innerHTML=chips.map(c=>`<button class="chip${V.cat===c[0]?' on':''}" data-c="${esc(c[0])}">${esc(c[1])}</button>`).join('');
+  const q=norm(V.q);
+  let L=S.links.filter(l=>{
+    if(V.cat==='★'&&!l.fav)return false;
+    if(V.cat&&V.cat!=='★'&&l.cat!==V.cat)return false;
+    if(!q)return true;
+    return norm([l.title,l.desc,l.url,l.cat,(l.tags||[]).join(' ')].join(' ')).includes(q);
+  });
+  L.sort((a,b)=>{
+    if(!!b.fav!==!!a.fav)return b.fav?1:-1;
+    if(V.sort==='alpha')return a.title.localeCompare(b.title);
+    if(V.sort==='cat')return (a.cat||'').localeCompare(b.cat||'')||a.title.localeCompare(b.title);
+    return (b.created||0)-(a.created||0);
+  });
+  $('#count').textContent=L.length+' '+t('links');
+  if(!L.length){$('#list').innerHTML=`<div class="empty">${t('empty')}</div>`;return;}
+  $('#list').innerHTML=L.map(l=>{
+    const n=net(l.url);
+    return`<div class="card" data-id="${l.id}">
+<div class="row"><div class="badge" style="background:${n.bg};color:${n.fg}">${esc(n.ab)}</div>
+<div class="main" data-a="open"><div class="title">${esc(l.title)}</div>
+${l.desc?`<div class="desc">${esc(l.desc)}</div>`:''}
+<div class="url">${esc(host(l.url))}</div>
+<div class="meta">${l.cat?`<span class="tag cat">${esc(l.cat)}</span>`:''}${(l.tags||[]).map(x=>`<span class="tag">#${esc(x)}</span>`).join('')}</div></div>
+<button class="star" data-a="fav">${l.fav?'★':'☆'}</button></div>
+<div class="acts"><button class="pri" data-a="open">${esc(t('open'))}</button><button data-a="copy">${esc(t('copy'))}</button><button data-a="edit">✎</button><button class="del" data-a="del">🗑</button></div></div>`;
+  }).join('');
+}
+
+function openUrl(u){if(window.Android&&Android.openUrl)Android.openUrl(u);else window.open(u,'_blank');}
+function copyText(s){if(window.Android&&Android.copy){Android.copy(s);}else if(navigator.clipboard){navigator.clipboard.writeText(s);}toast(t('copied'));}
+function askConfirm(msg,cb){$('#qText').textContent=msg;confirmCb=cb;show('#ovConfirm');}
+
+$('#list').addEventListener('click',e=>{
+  const b=e.target.closest('[data-a]');if(!b)return;
+  const c=e.target.closest('.card');const l=S.links.find(x=>x.id===c.dataset.id);if(!l)return;
+  const a=b.dataset.a;
+  if(a==='open')openUrl(l.url);
+  else if(a==='copy')copyText(l.url);
+  else if(a==='fav'){l.fav=!l.fav;save();render();}
+  else if(a==='edit')openForm(l.id);
+  else if(a==='del')askConfirm(t('delq'),()=>{S.links=S.links.filter(x=>x.id!==l.id);save();render();toast(t('deleted'));});
+});
+$('#chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;V.cat=b.dataset.c;render();});
+$('#q').addEventListener('input',e=>{V.q=e.target.value;render();});
+$('#sort').addEventListener('change',e=>{V.sort=e.target.value;render();});
+$('#bLang').onclick=()=>{S.lang=S.lang==='ar'?'fr':'ar';save();applyLang();render();};
+$('#bMenu').onclick=()=>show('#ovMenu');
+$('#fab').onclick=()=>openForm(null);
+
+function fillCats(sel){
+  $('#fCat').innerHTML=S.cats.map(c=>`<option value="${esc(c)}"${c===sel?' selected':''}>${esc(c)}</option>`).join('')+`<option value="__new">${esc(t('newcat'))}</option>`;
+  $('#fNewCat').style.display='none';$('#fNewCat').value='';
+}
+function openForm(id,pref){
+  editing=id;catTouched=!!id;
+  const l=id?S.links.find(x=>x.id===id):Object.assign({url:'',title:'',desc:'',cat:'',tags:[]},pref||{});
+  $('#fTitle').textContent=t(id?'edit':'add');
+  $('#fUrl').value=l.url;$('#fName').value=l.title;$('#fDesc').value=l.desc||'';$('#fTags').value=(l.tags||[]).join(', ');
+  let cat=l.cat;if(!cat&&V.cat&&V.cat!=='★')cat=V.cat;
+  fillCats(cat);autoCat();
+  show('#ovForm');
+}
+function autoCat(){
+  if(catTouched)return;
+  const u=normUrl($('#fUrl').value);if(!u)return;
+  const n=net(u).name;
+  if(n&&S.cats.includes(n))$('#fCat').value=n;
+}
+$('#fUrl').addEventListener('input',autoCat);
+$('#fCat').addEventListener('change',e=>{catTouched=true;const nw=e.target.value==='__new';$('#fNewCat').style.display=nw?'block':'none';if(nw)$('#fNewCat').focus();});
+$('#fCancel').onclick=()=>hide('#ovForm');
+$('#fSave').onclick=()=>{
+  const url=normUrl($('#fUrl').value);
+  if(!url){toast(t('invalid'));return;}
+  if(!editing&&S.links.some(x=>x.url===url)){toast(t('dup'));return;}
+  let cat=$('#fCat').value;
+  if(cat==='__new'){cat=$('#fNewCat').value.trim()||'Divers';}
+  if(!S.cats.includes(cat))S.cats.push(cat);
+  const tags=$('#fTags').value.split(/[,،]/).map(x=>x.trim().replace(/^#/,'')).filter(Boolean);
+  const data={url,title:$('#fName').value.trim()||host(url),desc:$('#fDesc').value.trim(),cat,tags};
+  if(editing){Object.assign(S.links.find(x=>x.id===editing),data);}
+  else S.links.push(Object.assign({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),fav:false,created:Date.now()},data));
+  save();hide('#ovForm');render();toast(t('saved'));
+};
+
+$('#mClose').onclick=()=>hide('#ovMenu');
+$('#mExport').onclick=()=>{
+  hide('#ovMenu');
+  const json=JSON.stringify({app:'meslinks',version:1,cats:S.cats,links:S.links},null,2);
+  if(window.Android&&Android.share)Android.share('Mes Liens',json);
+  else{const a=document.createElement('a');a.href=URL.createObjectURL(new Blob([json],{type:'application/json'}));a.download='mes-liens.json';a.click();}
+};
+$('#mImport').onclick=()=>{hide('#ovMenu');$('#iText').value='';$('#iFile').value='';show('#ovImport');};
+$('#iCancel').onclick=()=>hide('#ovImport');
+$('#iFile').addEventListener('change',e=>{
+  const f=e.target.files&&e.target.files[0];if(!f)return;
+  const r=new FileReader();r.onload=()=>{$('#iText').value=r.result;};r.readAsText(f);
+});
+$('#iGo').onclick=()=>{
+  let d;try{d=JSON.parse($('#iText').value);}catch(e){toast(t('bad'));return;}
+  const arr=Array.isArray(d)?d:(d&&d.links);if(!Array.isArray(arr)){toast(t('bad'));return;}
+  let n=0;
+  if(d.cats&&Array.isArray(d.cats))d.cats.forEach(c=>{if(typeof c==='string'&&c&&!S.cats.includes(c))S.cats.push(c);});
+  arr.forEach(x=>{
+    const url=normUrl(x&&x.url);if(!url||S.links.some(l=>l.url===url))return;
+    const cat=(x.cat&&String(x.cat))||'Divers';if(!S.cats.includes(cat))S.cats.push(cat);
+    S.links.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),url,title:String(x.title||host(url)),desc:String(x.desc||''),cat,tags:Array.isArray(x.tags)?x.tags.map(String):[],fav:!!x.fav,created:x.created||Date.now()});
+    n++;
+  });
+  save();hide('#ovImport');render();toast(n+' '+t('imported'));
+};
+function renderCats(){
+  $('#cList').innerHTML=S.cats.map(c=>`<div class="crow"><span>${esc(c)} <small style="color:var(--m)">(${S.links.filter(l=>l.cat===c).length})</small></span>${c==='Divers'?'':`<button data-c="${esc(c)}">🗑</button>`}</div>`).join('');
+}
+$('#mCats').onclick=()=>{hide('#ovMenu');renderCats();show('#ovCats');};
+$('#cClose').onclick=()=>{hide('#ovCats');render();};
+$('#cList').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;const c=b.dataset.c;
+  askConfirm(t('catDelq'),()=>{
+    if(!S.cats.includes('Divers'))S.cats.push('Divers');
+    S.links.forEach(l=>{if(l.cat===c)l.cat='Divers';});
+    S.cats=S.cats.filter(x=>x!==c);if(V.cat===c)V.cat='';
+    save();renderCats();render();
+  });
+});
+$('#qNo').onclick=()=>{hide('#ovConfirm');confirmCb=null;};
+$('#qYes').onclick=()=>{hide('#ovConfirm');const f=confirmCb;confirmCb=null;if(f)f();};
+
+// Appelé par l'application Android quand un lien est partagé depuis une autre application
+window.onShared=function(text){
+  text=String(text||'');
+  const m=text.match(/https?:\/\/[^\s]+/i);
+  const url=m?m[0]:'';
+  const rest=text.replace(url,'').trim();
+  ['ovMenu','ovImport','ovCats','ovConfirm'].forEach(i=>hide('#'+i));
+  openForm(null,{url,title:rest.split('\n')[0].slice(0,120)});
+};
+// Bouton retour Android : renvoie true si un panneau a été fermé
+window.onBack=function(){
+  const o=document.querySelector('.ov.show');
+  if(o){o.classList.remove('show');if(o.id==='ovCats')render();return true;}
+  return false;
+};
+
+applyLang();render();
+</script>
+</body>
+</html>
