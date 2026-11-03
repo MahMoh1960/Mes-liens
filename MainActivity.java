@@ -16,6 +16,16 @@ import android.content.pm.ShortcutInfo;
 import android.content.pm.ShortcutManager;
 import android.graphics.drawable.Icon;
 import org.json.JSONArray;
+import android.content.pm.PackageManager;
+import android.content.pm.ResolveInfo;
+import android.graphics.Bitmap;
+import android.graphics.Canvas;
+import android.graphics.drawable.Drawable;
+import android.util.Base64;
+import java.io.ByteArrayOutputStream;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 import java.util.ArrayList;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
@@ -222,6 +232,20 @@ public class MainActivity extends Activity {
         });
     }
 
+    private String iconB64(Drawable d) {
+        try {
+            Bitmap bmp = Bitmap.createBitmap(48, 48, Bitmap.Config.ARGB_8888);
+            Canvas c = new Canvas(bmp);
+            d.setBounds(0, 0, 48, 48);
+            d.draw(c);
+            ByteArrayOutputStream bos = new ByteArrayOutputStream();
+            bmp.compress(Bitmap.CompressFormat.PNG, 100, bos);
+            return "data:image/png;base64," + Base64.encodeToString(bos.toByteArray(), Base64.NO_WRAP);
+        } catch (Exception e) {
+            return "";
+        }
+    }
+
     private class Bridge {
         @JavascriptInterface
         public void openUrl(final String url) {
@@ -262,6 +286,50 @@ public class MainActivity extends Activity {
                         startActivity(i);
                     } catch (Exception e) {
                         Toast.makeText(MainActivity.this, "Impossible d'ouvrir le fichier / تعذر فتح الملف", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public String getApps() {
+            try {
+                PackageManager pm = getPackageManager();
+                Intent main = new Intent(Intent.ACTION_MAIN, null);
+                main.addCategory(Intent.CATEGORY_LAUNCHER);
+                List<ResolveInfo> list = pm.queryIntentActivities(main, 0);
+                JSONArray arr = new JSONArray();
+                Set<String> seen = new HashSet<String>();
+                for (ResolveInfo ri : list) {
+                    String pkg = ri.activityInfo.packageName;
+                    if (pkg.equals(getPackageName()) || !seen.add(pkg)) continue;
+                    JSONObject o = new JSONObject();
+                    o.put("p", pkg);
+                    o.put("n", String.valueOf(ri.loadLabel(pm)));
+                    o.put("i", iconB64(ri.loadIcon(pm)));
+                    arr.put(o);
+                }
+                return arr.toString();
+            } catch (Exception e) {
+                return "[]";
+            }
+        }
+
+        @JavascriptInterface
+        public void openApp(final String pkg) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Intent i = getPackageManager().getLaunchIntentForPackage(pkg);
+                        if (i == null) {
+                            Toast.makeText(MainActivity.this, "Application introuvable / التطبيق غير موجود", Toast.LENGTH_LONG).show();
+                            return;
+                        }
+                        i.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, "Impossible d'ouvrir l'application / تعذر فتح التطبيق", Toast.LENGTH_LONG).show();
                     }
                 }
             });

@@ -22,6 +22,8 @@ h1{flex:1;margin:0;font-size:22px;color:var(--y)}
 [dir=rtl] .vt button:first-child{border-radius:0 10px 10px 0}
 [dir=rtl] .vt button:last-child{border-radius:10px 0 0 10px}
 .vt button.on{background:var(--y);color:#0B1B3A;border-color:var(--y);font-weight:700}
+.approw{display:flex;align-items:center;gap:12px;padding:8px 12px}
+.approw img{width:36px;height:36px;border-radius:8px;flex:none}
 .chips{display:flex;gap:6px;overflow-x:auto;padding:7px 0 3px}
 .chip{flex:none;padding:5px 13px;border-radius:20px;border:1px solid var(--line);background:var(--card);color:var(--t);font-size:14px}
 .chip.on{background:var(--y);color:#0B1B3A;border-color:var(--y);font-weight:700}
@@ -91,6 +93,7 @@ textarea.f{min-height:90px;resize:vertical}
 <div class="ov" id="ovForm"><div class="sheet">
   <h2 id="fTitle"></h2>
   <button class="mi" type="button" id="fPick"></button>
+  <button class="mi" type="button" id="fPickApp"></button>
   <label id="lUrl"></label><input class="f" id="fUrl" inputmode="url" autocapitalize="off" autocomplete="off" style="direction:ltr;text-align:start">
   <label id="lName"></label><input class="f" id="fName">
   <label id="lDesc"></label><textarea class="f" id="fDesc"></textarea>
@@ -136,6 +139,13 @@ textarea.f{min-height:90px;resize:vertical}
   <div class="btns"><button id="vClose"></button></div>
 </div></div>
 
+<div class="ov" id="ovApps"><div class="sheet">
+  <h2 id="aTitle"></h2>
+  <input class="f" id="aSearch" type="search" autocomplete="off">
+  <div id="aList" style="margin-top:8px"></div>
+  <div class="btns"><button id="aClose"></button></div>
+</div></div>
+
 <div class="ov" id="ovConfirm"><div class="sheet">
   <h2 id="qText"></h2>
   <div class="btns"><button id="qNo"></button><button class="pri" id="qYes"></button></div>
@@ -153,7 +163,7 @@ save:'Enregistrer',cancel:'Annuler',open:'Ouvrir',copy:'Copier',del:'Supprimer',
 copied:'Lien copié',saved:'Enregistré',deleted:'Supprimé',invalid:'Adresse invalide',dup:'Ce lien existe déjà',
 empty:'Aucun lien pour le moment.<br>Appuyez sur + ou utilisez « Partager » depuis une autre application.',
 sRecent:'Plus récents',sAlpha:'A → Z',sCat:'Par catégorie',menu:'Menu',export:'Exporter (sauvegarde)',import:'Importer une sauvegarde',cats:'Gérer les catégories',
-pick:'📁 Choisir un fichier du téléphone',unpick:'🌐 Utiliser plutôt une adresse web',det:'De quoi s’agit-il ?',editBtn:'Modifier',vMany:'Plusieurs liens trouvés pour',vtLab:'🎤 Chercher dans :',vtApp:'📱 Mes liens',vtG:'🌐 Google',vNone:'Aucun lien trouvé pour',vSearch:'🎤 Recherche Google : ',voiceFail:'Rien entendu, réessayez',voiceNA:'Voix indisponible',pin:'🎤 Raccourci vocal sur l’écran d’accueil',catNewPh:'Nom de la nouvelle catégorie',catAdd:'Ajouter',catExists:'Cette catégorie existe déjà',close:'Fermer',importTitle:'Importer',chooseFile:'Choisir un fichier',paste:'… ou coller le contenu ici',go:'Importer',imported:'lien(s) ajouté(s)',bad:'Fichier non valide',
+pick:'📁 Choisir un fichier du téléphone',unpick:'🌐 Utiliser plutôt une adresse web',det:'De quoi s’agit-il ?',editBtn:'Modifier',vMany:'Plusieurs liens trouvés pour',pickApp:'📲 Choisir une application du téléphone',appSearch:'Rechercher une application…',vtLab:'🎤 Chercher dans :',vtApp:'📱 Mes liens',vtG:'🌐 Google',vNone:'Aucun lien trouvé pour',vSearch:'🎤 Recherche Google : ',voiceFail:'Rien entendu, réessayez',voiceNA:'Voix indisponible',pin:'🎤 Raccourci vocal sur l’écran d’accueil',catNewPh:'Nom de la nouvelle catégorie',catAdd:'Ajouter',catExists:'Cette catégorie existe déjà',close:'Fermer',importTitle:'Importer',chooseFile:'Choisir un fichier',paste:'… ou coller le contenu ici',go:'Importer',imported:'lien(s) ajouté(s)',bad:'Fichier non valide',
 links:'lien(s)',catDelq:'Supprimer cette catégorie ? Ses liens passeront dans « Divers ».'},
 ar:{title:'روابطي',search:'ابحث عن رابط…',all:'الكل',favs:'★ المفضلة',add:'إضافة رابط',edit:'تعديل الرابط',
 url:'العنوان (URL)',name:'العنوان',desc:'ما هو موضوعه؟',cat:'الفئة',newcat:'+ فئة جديدة…',newcatph:'اسم الفئة',tags:'وسوم (مفصولة بفواصل)',
@@ -161,7 +171,7 @@ save:'حفظ',cancel:'إلغاء',open:'فتح',copy:'نسخ',del:'حذف',delq:
 copied:'تم نسخ الرابط',saved:'تم الحفظ',deleted:'تم الحذف',invalid:'عنوان غير صالح',dup:'هذا الرابط موجود مسبقاً',
 empty:'لا توجد روابط حالياً.<br>اضغط + أو استعمل «مشاركة» من تطبيق آخر.',
 sRecent:'الأحدث',sAlpha:'أ → ي',sCat:'حسب الفئة',menu:'القائمة',export:'تصدير (نسخة احتياطية)',import:'استيراد نسخة احتياطية',cats:'إدارة الفئات',
-pick:'📁 اختيار ملف من الهاتف',unpick:'🌐 استعمال عنوان ويب بدلاً من ذلك',det:'ما هو موضوعه؟',editBtn:'تعديل',vMany:'عدة روابط لـ',vtLab:'🎤 البحث في:',vtApp:'📱 روابطي',vtG:'🌐 غوغل',vNone:'لا يوجد رابط لـ',vSearch:'🎤 بحث في غوغل: ',voiceFail:'لم أسمع شيئاً، أعد المحاولة',voiceNA:'الصوت غير متاح',pin:'🎤 اختصار صوتي على الشاشة الرئيسية',catNewPh:'اسم الفئة الجديدة',catAdd:'إضافة',catExists:'هذه الفئة موجودة مسبقاً',close:'إغلاق',importTitle:'استيراد',chooseFile:'اختيار ملف',paste:'… أو الصق المحتوى هنا',go:'استيراد',imported:'رابط مضاف',bad:'ملف غير صالح',
+pick:'📁 اختيار ملف من الهاتف',unpick:'🌐 استعمال عنوان ويب بدلاً من ذلك',det:'ما هو موضوعه؟',editBtn:'تعديل',vMany:'عدة روابط لـ',pickApp:'📲 اختيار تطبيق من الهاتف',appSearch:'ابحث عن تطبيق…',vtLab:'🎤 البحث في:',vtApp:'📱 روابطي',vtG:'🌐 غوغل',vNone:'لا يوجد رابط لـ',vSearch:'🎤 بحث في غوغل: ',voiceFail:'لم أسمع شيئاً، أعد المحاولة',voiceNA:'الصوت غير متاح',pin:'🎤 اختصار صوتي على الشاشة الرئيسية',catNewPh:'اسم الفئة الجديدة',catAdd:'إضافة',catExists:'هذه الفئة موجودة مسبقاً',close:'إغلاق',importTitle:'استيراد',chooseFile:'اختيار ملف',paste:'… أو الصق المحتوى هنا',go:'استيراد',imported:'رابط مضاف',bad:'ملف غير صالح',
 links:'رابط',catDelq:'حذف هذه الفئة؟ ستنتقل روابطها إلى «Divers».'}
 };
 const NETS=[
@@ -190,7 +200,7 @@ const EXP=new Set();
 
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
-function normUrl(u){u=String(u||'').trim();if(!u)return'';if(/^content:\/\//i.test(u))return u;if(!/^[a-z][a-z0-9+.-]*:\/\//i.test(u))u='https://'+u;try{const x=new URL(u);if(!/^https?:$/.test(x.protocol))return'';if(!x.hostname.includes('.'))return'';return x.href;}catch(e){return'';}}
+function normUrl(u){u=String(u||'').trim();if(!u)return'';if(/^(content|app):\/\//i.test(u))return u;if(!/^[a-z][a-z0-9+.-]*:\/\//i.test(u))u='https://'+u;try{const x=new URL(u);if(!/^https?:$/.test(x.protocol))return'';if(!x.hostname.includes('.'))return'';return x.href;}catch(e){return'';}}
 function host(u){if(/^content:/i.test(u))return'';try{return new URL(u).hostname.replace(/^www\./,'');}catch(e){return u;}}
 function fileNet(l){
   const m=String(l.mime||'').toLowerCase();
@@ -200,7 +210,8 @@ function fileNet(l){
   if(/pdf|epub|text|word|document|mobi/.test(m))return{ab:'📖',bg:'#D97706',fg:'#fff'};
   return{ab:'📄',bg:'#FFD60A',fg:'#0B1B3A'};
 }
-function openLink(l){if(l.file&&window.Android&&Android.openFile)Android.openFile(l.url,l.mime||'');else openUrl(l.url);}
+function appNet(l){return l.icon?{ab:'',bg:'transparent',fg:'#fff'}:{ab:'📲',bg:'#25D366',fg:'#fff'};}
+function openLink(l){if(l.app&&window.Android&&Android.openApp)Android.openApp(l.pkg);else if(l.file&&window.Android&&Android.openFile)Android.openFile(l.url,l.mime||'');else openUrl(l.url);}
 function net(u){const h=host(u);for(const n of NETS){if(n[0].test(h))return{name:n[1],ab:n[2],bg:n[3],fg:n[4]};}return{name:'',ab:'🌐',bg:'#FFD60A',fg:'#0B1B3A'};}
 function toast(m){const e=$('#toast');e.textContent=m;e.style.display='block';clearTimeout(toast.t);toast.t=setTimeout(()=>e.style.display='none',2000);}
 function show(id){$(id).classList.add('show');}
@@ -218,7 +229,7 @@ function applyLang(){
   $('#mTitle').textContent=t('menu');$('#mExport').textContent=t('export');$('#mImport').textContent=t('import');$('#mCats').textContent=t('cats');$('#mClose').textContent=t('close');
   $('#iTitle').textContent=t('importTitle');$('#iFileL').textContent=t('chooseFile');$('#iPasteL').textContent=t('paste');$('#iCancel').textContent=t('cancel');$('#iGo').textContent=t('go');
   $('#cTitle').textContent=t('cats');$('#cClose').textContent=t('close');$('#cNew').placeholder=t('catNewPh');$('#cAdd').textContent=t('catAdd');
-  $('#qNo').textContent=t('no');updVL();$('#mPin').textContent=t('pin');$('#vClose').textContent=t('close');$('#qYes').textContent=t('yes');
+  $('#qNo').textContent=t('no');updVL();$('#fPickApp').textContent=t('pickApp');$('#aTitle').textContent=t('pickApp');$('#aSearch').placeholder=t('appSearch');$('#aClose').textContent=t('close');$('#mPin').textContent=t('pin');$('#vClose').textContent=t('close');$('#qYes').textContent=t('yes');
   $('#moEdit').textContent='✎ '+t('editBtn');$('#moCopy').textContent='⧉ '+t('copy');$('#moDel').textContent='🗑 '+t('del');$('#moClose').textContent=t('close');
 }
 function render(){
@@ -240,11 +251,11 @@ function render(){
   $('#count').textContent=L.length+' '+t('links');
   if(!L.length){$('#list').innerHTML=`<div class="empty">${t('empty')}</div>`;return;}
   $('#list').innerHTML=L.map(l=>{
-    const n=l.file?fileNet(l):net(l.url);
+    const n=l.file?fileNet(l):l.app?appNet(l):net(l.url);
     const hasDet=!!(l.desc||(l.tags||[]).length);
     const op=EXP.has(l.id);
     return`<div class="card" data-id="${l.id}">
-<div class="row"><div class="badge" style="background:${n.bg};color:${n.fg}">${esc(n.ab)}</div>
+<div class="row"><div class="badge" style="background:${n.bg};color:${n.fg}${l.app&&l.icon?';border-color:transparent':''}">${l.app&&l.icon?`<img src="${l.icon}" style="width:32px;height:32px;border-radius:7px">`:esc(n.ab)}</div>
 <div class="main" data-a="open"><div class="title">${esc(l.title)}</div></div>
 ${hasDet?`<button class="cb" data-a="det">${op?'▲':'ℹ'}</button>`:''}<button class="star" data-a="fav">${l.fav?'★':'☆'}</button><button class="cb" data-a="more">⋮</button></div>
 ${op&&hasDet?`<div class="det">${l.desc?`<div class="desc">${esc(l.desc)}</div>`:''}${(l.tags||[]).length?`<div class="meta">${l.tags.map(x=>`<span class="tag">#${esc(x)}</span>`).join('')}</div>`:''}</div>`:''}</div>`;
@@ -260,14 +271,14 @@ $('#list').addEventListener('click',e=>{
   const c=e.target.closest('.card');const l=S.links.find(x=>x.id===c.dataset.id);if(!l)return;
   const a=b.dataset.a;
   if(a==='open')openLink(l);
-  else if(a==='copy')copyText(l.file?(l.fname||l.url):l.url);
+  else if(a==='copy')copyText((l.file||l.app)?(l.fname||l.url):l.url);
   else if(a==='fav'){l.fav=!l.fav;save();render();}
   else if(a==='det'){const st=$('#list').scrollTop;if(EXP.has(l.id))EXP.delete(l.id);else EXP.add(l.id);render();$('#list').scrollTop=st;}
   else if(a==='more'){moreId=l.id;show('#ovMore');}
 });
 function moreLink(){return S.links.find(x=>x.id===moreId);}
 $('#moEdit').onclick=()=>{hide('#ovMore');if(moreId)openForm(moreId);};
-$('#moCopy').onclick=()=>{hide('#ovMore');const l=moreLink();if(l)copyText(l.file?(l.fname||l.url):l.url);};
+$('#moCopy').onclick=()=>{hide('#ovMore');const l=moreLink();if(l)copyText((l.file||l.app)?(l.fname||l.url):l.url);};
 $('#moDel').onclick=()=>{hide('#ovMore');const l=moreLink();if(!l)return;askConfirm(t('delq'),()=>{S.links=S.links.filter(x=>x.id!==l.id);EXP.delete(l.id);save();render();toast(t('deleted'));});};
 $('#moClose').onclick=()=>hide('#ovMore');
 $('#chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;V.cat=b.dataset.c;render();});
@@ -284,7 +295,7 @@ function fillCats(sel){
 function openForm(id,pref){
   editing=id;catTouched=!!id;
   const l=id?S.links.find(x=>x.id===id):Object.assign({url:'',title:'',desc:'',cat:'',tags:[]},pref||{});
-  pend=l.file?{uri:l.url,mime:l.mime||'',fname:l.fname||''}:null;
+  pend=l.file?{uri:l.url,mime:l.mime||'',fname:l.fname||''}:(l.app?{uri:l.url,app:true,pkg:l.pkg,fname:l.fname||l.title,icon:l.icon||''}:null);
   $('#fTitle').textContent=t(id?'edit':'add');
   $('#fUrl').value=l.url;$('#fName').value=l.title;$('#fDesc').value=l.desc||'';$('#fTags').value=(l.tags||[]).join(', ');
   let cat=l.cat;if(!cat&&V.cat&&V.cat!=='★')cat=V.cat;
@@ -294,13 +305,35 @@ function openForm(id,pref){
 function setFileUI(){
   $('#fPick').textContent=pend?t('unpick'):t('pick');
   const u=$('#fUrl');
-  if(pend){u.value='📁 '+(pend.fname||'Fichier');u.readOnly=true;}
+  $('#fPickApp').style.display=pend?'none':'block';
+  if(pend){u.value=(pend.app?'📲 ':'📁 ')+(pend.fname||'Fichier');u.readOnly=true;}
   else{if(u.readOnly)u.value='';u.readOnly=false;}
 }
 $('#fPick').onclick=()=>{
   if(pend){pend=null;setFileUI();return;}
   if(window.Android&&Android.pickFile)Android.pickFile();
 };
+let APPS=null;
+$('#fPickApp').onclick=()=>{
+  if(!(window.Android&&Android.getApps)){toast(t('voiceNA'));return;}
+  if(!APPS){try{APPS=JSON.parse(Android.getApps());}catch(e){APPS=[];}APPS.sort((a,b)=>a.n.localeCompare(b.n));}
+  $('#aSearch').value='';renderApps();show('#ovApps');
+};
+function renderApps(){
+  const q=norm($('#aSearch').value);
+  $('#aList').innerHTML=APPS.filter(a=>!q||norm(a.n).includes(q)).map(a=>`<button class="mi approw" data-p="${esc(a.p)}"><img src="${a.i}"><span>${esc(a.n)}</span></button>`).join('')||'<div class="empty">—</div>';
+}
+$('#aSearch').addEventListener('input',renderApps);
+$('#aClose').onclick=()=>hide('#ovApps');
+$('#aList').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  const a=APPS.find(x=>x.p===b.dataset.p);if(!a)return;
+  hide('#ovApps');
+  pend={uri:'app://'+a.p,app:true,pkg:a.p,fname:a.n,icon:a.i};
+  setFileUI();
+  if(!$('#fName').value.trim())$('#fName').value=a.n;
+  if(S.cats.includes('Mobile')){$('#fCat').value='Mobile';catTouched=true;$('#fNewCat').style.display='none';}
+});
 window.onPicked=function(uri,name,mime){
   pend={uri,mime,fname:name};
   setFileUI();
@@ -325,7 +358,7 @@ $('#fSave').onclick=()=>{
   if(cat==='__new'){cat=$('#fNewCat').value.trim()||'Divers';}
   if(!S.cats.includes(cat))S.cats.push(cat);
   const tags=$('#fTags').value.split(/[,،]/).map(x=>x.trim().replace(/^#/,'')).filter(Boolean);
-  const data={url,title:$('#fName').value.trim()||(pend?(pend.fname||'Fichier'):host(url)),desc:$('#fDesc').value.trim(),cat,tags,file:!!pend,mime:pend?pend.mime:'',fname:pend?pend.fname:''};
+  const data={url,title:$('#fName').value.trim()||(pend?(pend.fname||'Fichier'):host(url)),desc:$('#fDesc').value.trim(),cat,tags,file:!!(pend&&!pend.app),app:!!(pend&&pend.app),pkg:(pend&&pend.app)?pend.pkg:'',icon:(pend&&pend.app)?pend.icon:'',mime:pend?(pend.mime||''):'',fname:pend?pend.fname:''};
   if(editing){Object.assign(S.links.find(x=>x.id===editing),data);}
   else S.links.push(Object.assign({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),fav:false,created:Date.now()},data));
   save();hide('#ovForm');render();toast(t('saved'));
@@ -352,7 +385,7 @@ $('#iGo').onclick=()=>{
   arr.forEach(x=>{
     const url=normUrl(x&&x.url);if(!url||S.links.some(l=>l.url===url))return;
     const cat=(x.cat&&String(x.cat))||'Divers';if(!S.cats.includes(cat))S.cats.push(cat);
-    S.links.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),url,title:String(x.title||host(url)||x.fname||'Fichier'),file:!!x.file,mime:String(x.mime||''),fname:String(x.fname||''),desc:String(x.desc||''),cat,tags:Array.isArray(x.tags)?x.tags.map(String):[],fav:!!x.fav,created:x.created||Date.now()});
+    S.links.push({id:Date.now().toString(36)+Math.random().toString(36).slice(2,6),url,title:String(x.title||host(url)||x.fname||'Fichier'),file:!!x.file,app:!!x.app,pkg:String(x.pkg||''),icon:String(x.icon||''),mime:String(x.mime||''),fname:String(x.fname||''),desc:String(x.desc||''),cat,tags:Array.isArray(x.tags)?x.tags.map(String):[],fav:!!x.fav,created:x.created||Date.now()});
     n++;
   });
   save();hide('#ovImport');render();toast(n+' '+t('imported'));
@@ -392,7 +425,7 @@ window.onShared=function(text){
 };
 // Bouton retour Android : renvoie true si un panneau a été fermé
 window.onBack=function(){
-  const o=document.querySelector('.ov.show');
+  const all=document.querySelectorAll('.ov.show');const o=all.length?all[all.length-1]:null;
   if(o){o.classList.remove('show');if(o.id==='ovCats')render();return true;}
   return false;
 };
@@ -436,7 +469,7 @@ function scoreLinks(q){
   const qs=q.join(' ');const out=[];
   S.links.forEach(l=>{
     const ti=VNORM(l.title);
-    const hay=VNORM([l.title,l.cat,(l.tags||[]).join(' '),l.desc,l.file?l.fname:host(l.url)].join(' '));
+    const hay=VNORM([l.title,l.cat,(l.tags||[]).join(' '),l.desc,(l.file||l.app)?l.fname:host(l.url)].join(' '));
     const sc=ti===qs?4:(inc(ti,qs)||(ti.length>2&&qs.includes(ti)))?3:q.every(w=>inc(ti,w))?2:q.every(w=>inc(hay,w))?1:0;
     if(sc)out.push([sc,l]);
   });
