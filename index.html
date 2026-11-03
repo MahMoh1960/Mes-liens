@@ -36,6 +36,9 @@ main{flex:1;overflow-y:auto;padding:6px 14px 100px}
 .acts button{flex:1;min-width:70px;padding:8px 6px;border-radius:10px;border:1px solid var(--line);background:var(--card2);color:var(--t);font-size:13px}
 .acts button.pri{background:var(--y);color:#0B1B3A;border-color:var(--y);font-weight:700}
 .acts button.del{color:var(--danger)}
+.acts button[data-a=more]{flex:none;min-width:46px;font-size:18px;font-weight:700}
+.det{margin-top:10px;padding-top:10px;border-top:1px solid var(--line)}
+.det .desc{margin-top:0}
 .empty{text-align:center;color:var(--m);margin-top:60px;line-height:1.6;padding:0 20px}
 .fab{position:fixed;inset-inline-end:18px;bottom:calc(18px + env(safe-area-inset-bottom));width:60px;height:60px;border-radius:30px;background:var(--y);color:#0B1B3A;border:0;font-size:34px;font-weight:700;box-shadow:0 4px 14px rgba(0,0,0,.5);z-index:6}
 .ov{position:fixed;inset:0;background:rgba(0,0,0,.6);z-index:20;display:none;align-items:flex-end;justify-content:center}
@@ -102,6 +105,13 @@ textarea.f{min-height:90px;resize:vertical}
   <div class="btns"><button id="cClose"></button></div>
 </div></div>
 
+<div class="ov" id="ovMore"><div class="sheet">
+  <button class="mi" id="moEdit"></button>
+  <button class="mi" id="moCopy"></button>
+  <button class="mi" id="moDel" style="color:var(--danger)"></button>
+  <div class="btns"><button id="moClose"></button></div>
+</div></div>
+
 <div class="ov" id="ovConfirm"><div class="sheet">
   <h2 id="qText"></h2>
   <div class="btns"><button id="qNo"></button><button class="pri" id="qYes"></button></div>
@@ -119,7 +129,7 @@ save:'Enregistrer',cancel:'Annuler',open:'Ouvrir',copy:'Copier',del:'Supprimer',
 copied:'Lien copié',saved:'Enregistré',deleted:'Supprimé',invalid:'Adresse invalide',dup:'Ce lien existe déjà',
 empty:'Aucun lien pour le moment.<br>Appuyez sur + ou utilisez « Partager » depuis une autre application.',
 sRecent:'Plus récents',sAlpha:'A → Z',sCat:'Par catégorie',menu:'Menu',export:'Exporter (sauvegarde)',import:'Importer une sauvegarde',cats:'Gérer les catégories',
-close:'Fermer',importTitle:'Importer',chooseFile:'Choisir un fichier',paste:'… ou coller le contenu ici',go:'Importer',imported:'lien(s) ajouté(s)',bad:'Fichier non valide',
+det:'De quoi s’agit-il ?',editBtn:'Modifier',close:'Fermer',importTitle:'Importer',chooseFile:'Choisir un fichier',paste:'… ou coller le contenu ici',go:'Importer',imported:'lien(s) ajouté(s)',bad:'Fichier non valide',
 links:'lien(s)',catDelq:'Supprimer cette catégorie ? Ses liens passeront dans « Divers ».'},
 ar:{title:'روابطي',search:'ابحث عن رابط…',all:'الكل',favs:'★ المفضلة',add:'إضافة رابط',edit:'تعديل الرابط',
 url:'العنوان (URL)',name:'العنوان',desc:'ما هو موضوعه؟',cat:'الفئة',newcat:'+ فئة جديدة…',newcatph:'اسم الفئة',tags:'وسوم (مفصولة بفواصل)',
@@ -127,7 +137,7 @@ save:'حفظ',cancel:'إلغاء',open:'فتح',copy:'نسخ',del:'حذف',delq:
 copied:'تم نسخ الرابط',saved:'تم الحفظ',deleted:'تم الحذف',invalid:'عنوان غير صالح',dup:'هذا الرابط موجود مسبقاً',
 empty:'لا توجد روابط حالياً.<br>اضغط + أو استعمل «مشاركة» من تطبيق آخر.',
 sRecent:'الأحدث',sAlpha:'أ → ي',sCat:'حسب الفئة',menu:'القائمة',export:'تصدير (نسخة احتياطية)',import:'استيراد نسخة احتياطية',cats:'إدارة الفئات',
-close:'إغلاق',importTitle:'استيراد',chooseFile:'اختيار ملف',paste:'… أو الصق المحتوى هنا',go:'استيراد',imported:'رابط مضاف',bad:'ملف غير صالح',
+det:'ما هو موضوعه؟',editBtn:'تعديل',close:'إغلاق',importTitle:'استيراد',chooseFile:'اختيار ملف',paste:'… أو الصق المحتوى هنا',go:'استيراد',imported:'رابط مضاف',bad:'ملف غير صالح',
 links:'رابط',catDelq:'حذف هذه الفئة؟ ستنتقل روابطها إلى «Divers».'}
 };
 const NETS=[
@@ -150,7 +160,8 @@ let S=load();
 function save(){try{localStorage.setItem(KEY,JSON.stringify(S));}catch(e){}}
 const t=k=>(I18N[S.lang]||I18N.fr)[k]||k;
 let V={q:'',cat:'',sort:'recent'};
-let editing=null,catTouched=false,confirmCb=null;
+let editing=null,catTouched=false,confirmCb=null,moreId=null;
+const EXP=new Set();
 
 const esc=s=>String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const norm=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g,'');
@@ -173,6 +184,7 @@ function applyLang(){
   $('#iTitle').textContent=t('importTitle');$('#iFileL').textContent=t('chooseFile');$('#iPasteL').textContent=t('paste');$('#iCancel').textContent=t('cancel');$('#iGo').textContent=t('go');
   $('#cTitle').textContent=t('cats');$('#cClose').textContent=t('close');
   $('#qNo').textContent=t('no');$('#qYes').textContent=t('yes');
+  $('#moEdit').textContent='✎ '+t('editBtn');$('#moCopy').textContent='⧉ '+t('copy');$('#moDel').textContent='🗑 '+t('del');$('#moClose').textContent=t('close');
 }
 function render(){
   const chips=[['',t('all')],['★',t('favs')]].concat(S.cats.map(c=>[c,c]));
@@ -194,14 +206,15 @@ function render(){
   if(!L.length){$('#list').innerHTML=`<div class="empty">${t('empty')}</div>`;return;}
   $('#list').innerHTML=L.map(l=>{
     const n=net(l.url);
+    const hasDet=!!(l.desc||(l.tags||[]).length);
+    const op=EXP.has(l.id);
     return`<div class="card" data-id="${l.id}">
 <div class="row"><div class="badge" style="background:${n.bg};color:${n.fg}">${esc(n.ab)}</div>
 <div class="main" data-a="open"><div class="title">${esc(l.title)}</div>
-${l.desc?`<div class="desc">${esc(l.desc)}</div>`:''}
-<div class="url">${esc(host(l.url))}</div>
-<div class="meta">${l.cat?`<span class="tag cat">${esc(l.cat)}</span>`:''}${(l.tags||[]).map(x=>`<span class="tag">#${esc(x)}</span>`).join('')}</div></div>
+<div class="url">${esc(host(l.url))}${l.cat?` · ${esc(l.cat)}`:''}</div></div>
 <button class="star" data-a="fav">${l.fav?'★':'☆'}</button></div>
-<div class="acts"><button class="pri" data-a="open">${esc(t('open'))}</button><button data-a="copy">${esc(t('copy'))}</button><button data-a="edit">✎</button><button class="del" data-a="del">🗑</button></div></div>`;
+<div class="acts"><button class="pri" data-a="open">${esc(t('open'))}</button>${hasDet?`<button data-a="det">${op?'▲':'ℹ'} ${esc(t('det'))}</button>`:''}<button data-a="more">⋮</button></div>
+${op&&hasDet?`<div class="det">${l.desc?`<div class="desc">${esc(l.desc)}</div>`:''}${(l.tags||[]).length?`<div class="meta">${l.tags.map(x=>`<span class="tag">#${esc(x)}</span>`).join('')}</div>`:''}</div>`:''}</div>`;
   }).join('');
 }
 
@@ -216,9 +229,14 @@ $('#list').addEventListener('click',e=>{
   if(a==='open')openUrl(l.url);
   else if(a==='copy')copyText(l.url);
   else if(a==='fav'){l.fav=!l.fav;save();render();}
-  else if(a==='edit')openForm(l.id);
-  else if(a==='del')askConfirm(t('delq'),()=>{S.links=S.links.filter(x=>x.id!==l.id);save();render();toast(t('deleted'));});
+  else if(a==='det'){const st=$('#list').scrollTop;if(EXP.has(l.id))EXP.delete(l.id);else EXP.add(l.id);render();$('#list').scrollTop=st;}
+  else if(a==='more'){moreId=l.id;show('#ovMore');}
 });
+function moreLink(){return S.links.find(x=>x.id===moreId);}
+$('#moEdit').onclick=()=>{hide('#ovMore');if(moreId)openForm(moreId);};
+$('#moCopy').onclick=()=>{hide('#ovMore');const l=moreLink();if(l)copyText(l.url);};
+$('#moDel').onclick=()=>{hide('#ovMore');const l=moreLink();if(!l)return;askConfirm(t('delq'),()=>{S.links=S.links.filter(x=>x.id!==l.id);EXP.delete(l.id);save();render();toast(t('deleted'));});};
+$('#moClose').onclick=()=>hide('#ovMore');
 $('#chips').addEventListener('click',e=>{const b=e.target.closest('.chip');if(!b)return;V.cat=b.dataset.c;render();});
 $('#q').addEventListener('input',e=>{V.q=e.target.value;render();});
 $('#sort').addEventListener('change',e=>{V.sort=e.target.value;render();});
