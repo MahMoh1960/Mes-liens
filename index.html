@@ -66,6 +66,7 @@ textarea.f{min-height:90px;resize:vertical}
   <div class="top">
     <h1 id="hTitle">Mes Liens</h1>
     <button class="ib" id="bMic">🎤</button>
+    <button class="ib" id="bVL">FR</button>
     <button class="ib" id="bLang">ع</button>
     <button class="ib" id="bMenu">⋮</button>
   </div>
@@ -208,7 +209,7 @@ function applyLang(){
   $('#mTitle').textContent=t('menu');$('#mExport').textContent=t('export');$('#mImport').textContent=t('import');$('#mCats').textContent=t('cats');$('#mClose').textContent=t('close');
   $('#iTitle').textContent=t('importTitle');$('#iFileL').textContent=t('chooseFile');$('#iPasteL').textContent=t('paste');$('#iCancel').textContent=t('cancel');$('#iGo').textContent=t('go');
   $('#cTitle').textContent=t('cats');$('#cClose').textContent=t('close');$('#cNew').placeholder=t('catNewPh');$('#cAdd').textContent=t('catAdd');
-  $('#qNo').textContent=t('no');$('#mPin').textContent=t('pin');$('#vClose').textContent=t('close');$('#qYes').textContent=t('yes');
+  $('#qNo').textContent=t('no');updVL();$('#mPin').textContent=t('pin');$('#vClose').textContent=t('close');$('#qYes').textContent=t('yes');
   $('#moEdit').textContent='✎ '+t('editBtn');$('#moCopy').textContent='⧉ '+t('copy');$('#moDel').textContent='🗑 '+t('del');$('#moClose').textContent=t('close');
 }
 function render(){
@@ -390,10 +391,14 @@ window.onBack=function(){
 // ===== Commande vocale =====
 const VNORM=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ًͯ-ٰٟ]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[^a-z0-9؀-ۿ\s]/g,' ').replace(/\s+/g,' ').trim();
 const FILL=new Set(('ouvre ouvrir ouvrez va aller allez sur lance lancer affiche afficher montre montrer mon ma mes le la les l un une du de des lien liens site page fichier application appli moi svp please s il te plait vous plait '+
- 'افتح افتحلي افتحي اذهب الى شغل موقع رابط الرابط ملف لي من فضلك').split(' '));
-const SEARCH=new Set('cherche chercher recherche rechercher trouve trouver search ابحث بحث دور'.split(' '));
-const SRCFILL=new Set('sur google عن على غوغل جوجل قوقل pour'.split(' '));
+ 'افتح افتحلي افتحي اذهب الى شغل موقع رابط الرابط ملف لي من فضلك '+
+ 'open go to launch show display visit take find my the a an link links site website page file me please can could would you i want hey').split(' '));
+const SEARCH=new Set('cherche chercher recherche rechercher trouve trouver search look ابحث بحث دور'.split(' '));
+const SRCFILL=new Set('sur google عن على غوغل جوجل قوقل pour for on in up'.split(' '));
 const KNOWN=[
+[['google maps','maps','خرائط','خرائط غوغل'],'https://maps.google.com'],
+[['google drive','drive','درايف'],'https://drive.google.com'],
+[['translate','google translate','traduction','traducteur','ترجمة'],'https://translate.google.com'],
 [['google','غوغل','جوجل','قوقل'],'https://www.google.com'],
 [['youtube','يوتيوب','يوتوب'],'https://www.youtube.com'],
 [['facebook','فيسبوك','فايسبوك','فيس بوك'],'https://www.facebook.com'],
@@ -410,7 +415,7 @@ const KNOWN=[
 const inc=(str,w)=>w.length<3?(' '+str+' ').includes(' '+w+' '):str.includes(w);
 function gsearch(q,heard){
   q=String(q||'').trim();if(!q)return false;
-  toast(t('vSearch')+q);openUrl('https://www.google.com/search?q='+encodeURIComponent(q));return true;
+  toast(t('vSearch')+q);openUrl('https://www.google.com/search?hl='+vl()+'&q='+encodeURIComponent(q));return true;
 }
 function pickLink(best,heard){
   if(best.length===1){toast('🎤 '+best[0].title);openLink(best[0]);return true;}
@@ -449,9 +454,13 @@ window.onVoice=function(arr){
   for(const h of arr){if(handleVoice(h,false))return;}
   handleVoice(arr[0],true);
 };
+const VL=['fr','ar','en'],VCODE={fr:'fr-FR',ar:'ar-MA',en:'en-US'},VLAB={fr:'FR',ar:'ع',en:'EN'},VNAME={fr:'Français',ar:'العربية',en:'English'};
+function vl(){return VL.includes(S.vlang)?S.vlang:S.lang;}
+function updVL(){const b=$('#bVL');if(b)b.textContent=VLAB[vl()];}
+$('#bVL').onclick=()=>{S.vlang=VL[(VL.indexOf(vl())+1)%VL.length];save();updVL();toast('🎤 '+VNAME[S.vlang]);};
 window.startVoice=function(){
   ['ovMenu','ovImport','ovCats','ovConfirm','ovMore','ovForm','ovVoice'].forEach(i=>hide('#'+i));
-  if(window.Android&&Android.listen)Android.listen(S.lang==='ar'?'ar-MA':'fr-FR');
+  if(window.Android&&Android.listen)Android.listen(VCODE[vl()]);
   else toast(t('voiceNA'));
 };
 $('#bMic').onclick=()=>window.startVoice();
