@@ -14,6 +14,14 @@ header{padding:8px 12px 4px;background:var(--bg);position:sticky;top:0;z-index:5
 h1{flex:1;margin:0;font-size:22px;color:var(--y)}
 .ib{background:var(--card);border:1px solid var(--line);color:var(--y);border-radius:12px;min-width:42px;height:42px;font-size:16px;font-weight:700}
 .search{width:100%;margin-top:7px;padding:9px 14px;border-radius:12px;border:1px solid var(--line);background:var(--card);color:var(--t);font-size:16px}
+.vt{display:flex;align-items:center;justify-content:flex-end;gap:8px;margin-top:6px;color:var(--m);font-size:12px}
+.vt .seg{display:flex}
+.vt button{padding:5px 12px;font-size:13px;border:1px solid var(--line);background:var(--card);color:var(--t)}
+.vt button:first-child{border-radius:10px 0 0 10px}
+.vt button:last-child{border-radius:0 10px 10px 0}
+[dir=rtl] .vt button:first-child{border-radius:0 10px 10px 0}
+[dir=rtl] .vt button:last-child{border-radius:10px 0 0 10px}
+.vt button.on{background:var(--y);color:#0B1B3A;border-color:var(--y);font-weight:700}
 .chips{display:flex;gap:6px;overflow-x:auto;padding:7px 0 3px}
 .chip{flex:none;padding:5px 13px;border-radius:20px;border:1px solid var(--line);background:var(--card);color:var(--t);font-size:14px}
 .chip.on{background:var(--y);color:#0B1B3A;border-color:var(--y);font-weight:700}
@@ -70,6 +78,7 @@ textarea.f{min-height:90px;resize:vertical}
     <button class="ib" id="bLang">ع</button>
     <button class="ib" id="bMenu">⋮</button>
   </div>
+  <div class="vt"><span id="vtLab"></span><div class="seg"><button id="vtApp"></button><button id="vtG"></button></div></div>
   <input class="search" id="q" type="search" autocomplete="off">
   <div class="chips" id="chips"></div>
   <div class="bar"><span id="count"></span>
@@ -144,7 +153,7 @@ save:'Enregistrer',cancel:'Annuler',open:'Ouvrir',copy:'Copier',del:'Supprimer',
 copied:'Lien copié',saved:'Enregistré',deleted:'Supprimé',invalid:'Adresse invalide',dup:'Ce lien existe déjà',
 empty:'Aucun lien pour le moment.<br>Appuyez sur + ou utilisez « Partager » depuis une autre application.',
 sRecent:'Plus récents',sAlpha:'A → Z',sCat:'Par catégorie',menu:'Menu',export:'Exporter (sauvegarde)',import:'Importer une sauvegarde',cats:'Gérer les catégories',
-pick:'📁 Choisir un fichier du téléphone',unpick:'🌐 Utiliser plutôt une adresse web',det:'De quoi s’agit-il ?',editBtn:'Modifier',vMany:'Plusieurs liens trouvés pour',vSearch:'🎤 Recherche Google : ',voiceFail:'Rien entendu, réessayez',voiceNA:'Voix indisponible',pin:'🎤 Raccourci vocal sur l’écran d’accueil',catNewPh:'Nom de la nouvelle catégorie',catAdd:'Ajouter',catExists:'Cette catégorie existe déjà',close:'Fermer',importTitle:'Importer',chooseFile:'Choisir un fichier',paste:'… ou coller le contenu ici',go:'Importer',imported:'lien(s) ajouté(s)',bad:'Fichier non valide',
+pick:'📁 Choisir un fichier du téléphone',unpick:'🌐 Utiliser plutôt une adresse web',det:'De quoi s’agit-il ?',editBtn:'Modifier',vMany:'Plusieurs liens trouvés pour',vtLab:'🎤 Chercher dans :',vtApp:'📱 Mes liens',vtG:'🌐 Google',vNone:'Aucun lien trouvé pour',vSearch:'🎤 Recherche Google : ',voiceFail:'Rien entendu, réessayez',voiceNA:'Voix indisponible',pin:'🎤 Raccourci vocal sur l’écran d’accueil',catNewPh:'Nom de la nouvelle catégorie',catAdd:'Ajouter',catExists:'Cette catégorie existe déjà',close:'Fermer',importTitle:'Importer',chooseFile:'Choisir un fichier',paste:'… ou coller le contenu ici',go:'Importer',imported:'lien(s) ajouté(s)',bad:'Fichier non valide',
 links:'lien(s)',catDelq:'Supprimer cette catégorie ? Ses liens passeront dans « Divers ».'},
 ar:{title:'روابطي',search:'ابحث عن رابط…',all:'الكل',favs:'★ المفضلة',add:'إضافة رابط',edit:'تعديل الرابط',
 url:'العنوان (URL)',name:'العنوان',desc:'ما هو موضوعه؟',cat:'الفئة',newcat:'+ فئة جديدة…',newcatph:'اسم الفئة',tags:'وسوم (مفصولة بفواصل)',
@@ -152,7 +161,7 @@ save:'حفظ',cancel:'إلغاء',open:'فتح',copy:'نسخ',del:'حذف',delq:
 copied:'تم نسخ الرابط',saved:'تم الحفظ',deleted:'تم الحذف',invalid:'عنوان غير صالح',dup:'هذا الرابط موجود مسبقاً',
 empty:'لا توجد روابط حالياً.<br>اضغط + أو استعمل «مشاركة» من تطبيق آخر.',
 sRecent:'الأحدث',sAlpha:'أ → ي',sCat:'حسب الفئة',menu:'القائمة',export:'تصدير (نسخة احتياطية)',import:'استيراد نسخة احتياطية',cats:'إدارة الفئات',
-pick:'📁 اختيار ملف من الهاتف',unpick:'🌐 استعمال عنوان ويب بدلاً من ذلك',det:'ما هو موضوعه؟',editBtn:'تعديل',vMany:'عدة روابط لـ',vSearch:'🎤 بحث في غوغل: ',voiceFail:'لم أسمع شيئاً، أعد المحاولة',voiceNA:'الصوت غير متاح',pin:'🎤 اختصار صوتي على الشاشة الرئيسية',catNewPh:'اسم الفئة الجديدة',catAdd:'إضافة',catExists:'هذه الفئة موجودة مسبقاً',close:'إغلاق',importTitle:'استيراد',chooseFile:'اختيار ملف',paste:'… أو الصق المحتوى هنا',go:'استيراد',imported:'رابط مضاف',bad:'ملف غير صالح',
+pick:'📁 اختيار ملف من الهاتف',unpick:'🌐 استعمال عنوان ويب بدلاً من ذلك',det:'ما هو موضوعه؟',editBtn:'تعديل',vMany:'عدة روابط لـ',vtLab:'🎤 البحث في:',vtApp:'📱 روابطي',vtG:'🌐 غوغل',vNone:'لا يوجد رابط لـ',vSearch:'🎤 بحث في غوغل: ',voiceFail:'لم أسمع شيئاً، أعد المحاولة',voiceNA:'الصوت غير متاح',pin:'🎤 اختصار صوتي على الشاشة الرئيسية',catNewPh:'اسم الفئة الجديدة',catAdd:'إضافة',catExists:'هذه الفئة موجودة مسبقاً',close:'إغلاق',importTitle:'استيراد',chooseFile:'اختيار ملف',paste:'… أو الصق المحتوى هنا',go:'استيراد',imported:'رابط مضاف',bad:'ملف غير صالح',
 links:'رابط',catDelq:'حذف هذه الفئة؟ ستنتقل روابطها إلى «Divers».'}
 };
 const NETS=[
@@ -433,38 +442,46 @@ function scoreLinks(q){
   });
   return out.sort((x,y)=>y[0]-x[0]);
 }
-function handleVoice(heard,final){
+function handleVoice(heard){
   const tk=VNORM(heard).split(' ').filter(Boolean);
   if(!tk.length)return false;
-  if(SEARCH.has(tk[0])){
-    // Recherche : d'abord dans mes liens, puis Google
-    let q=tk.slice(1).filter(w=>!SRCFILL.has(w));if(!q.length)q=tk.slice(1);
-    if(!q.length)return false;
-    const found=scoreLinks(q);
-    if(found.length)return pickLink(found.map(x=>x[1]),heard,q.join(' '));
-    return gsearch(q.join(' '),heard);
-  }
-  let q=tk.filter(w=>!FILL.has(w));if(!q.length)q=tk;
+  let q,isSearch=SEARCH.has(tk[0]);
+  if(isSearch){q=tk.slice(1).filter(w=>!SRCFILL.has(w));if(!q.length)q=tk.slice(1);}
+  else{q=tk.filter(w=>!FILL.has(w));if(!q.length)q=tk;}
+  if(!q.length)return false;
   const qs=q.join(' ');
-  const scored=scoreLinks(q);
-  const top=scored.length?scored[0][0]:0;
-  const best=scored.filter(x=>x[0]===top).map(x=>x[1]);
-  if(top>=2)return pickLink(best,heard);
-  const site=KNOWN.find(k=>k[0].some(a=>qs===a||(' '+qs+' ').includes(' '+a+' ')));
-  if(site){toast('🎤 '+site[0][0]);openUrl(site[1]);return true;}
-  if(top===1)return pickLink(best,heard);
-  if(final)return gsearch(qs,heard);
-  return false;
+  if(vt()==='google'){
+    if(!isSearch){
+      const site=KNOWN.find(k=>k[0].some(a=>qs===a||(' '+qs+' ').includes(' '+a+' ')));
+      if(site){toast('🎤 '+site[0][0]);openUrl(site[1]);return true;}
+    }
+    return gsearch(qs,heard);
+  }
+  // Mode « Mes liens » : uniquement dans l'application
+  const found=scoreLinks(q);
+  if(!found.length)return false;
+  const top=found[0][0];
+  const list=(isSearch||top<2)?found.map(x=>x[1]):found.filter(x=>x[0]===top).map(x=>x[1]);
+  return pickLink(list,heard);
 }
 window.onVoice=function(arr){
   arr=(arr||[]).map(String).filter(Boolean);
   if(!arr.length){toast(t('voiceFail'));return;}
-  for(const h of arr){if(handleVoice(h,false))return;}
-  handleVoice(arr[0],true);
+  for(const h of arr){if(handleVoice(h))return;}
+  toast(t('vNone')+' « '+arr[0]+' »');
 };
 const VL=['fr','ar','en'],VCODE={fr:'fr-FR',ar:'ar-MA',en:'en-US'},VLAB={fr:'FR',ar:'ع',en:'EN'},VNAME={fr:'Français',ar:'العربية',en:'English'};
 function vl(){return VL.includes(S.vlang)?S.vlang:S.lang;}
-function updVL(){const b=$('#bVL');if(b)b.textContent=VLAB[vl()];}
+function vt(){return S.vtarget==='google'?'google':'app';}
+function updVL(){
+  const b=$('#bVL');if(b)b.textContent=VLAB[vl()];
+  const a=$('#vtApp');if(!a)return;
+  $('#vtLab').textContent=t('vtLab');a.textContent=t('vtApp');$('#vtG').textContent=t('vtG');
+  a.classList.toggle('on',vt()==='app');$('#vtG').classList.toggle('on',vt()==='google');
+}
+function setVT(v){S.vtarget=v;save();updVL();toast('🎤 '+(v==='google'?'Google':t('vtApp').replace(/^\S+\s/,'')));}
+$('#vtApp').onclick=()=>setVT('app');
+$('#vtG').onclick=()=>setVT('google');
 $('#bVL').onclick=()=>{S.vlang=VL[(VL.indexOf(vl())+1)%VL.length];save();updVL();toast('🎤 '+VNAME[S.vlang]);};
 window.startVoice=function(){
   ['ovMenu','ovImport','ovCats','ovConfirm','ovMore','ovForm','ovVoice'].forEach(i=>hide('#'+i));
