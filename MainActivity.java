@@ -5,9 +5,11 @@ import android.content.ClipData;
 import android.content.ClipboardManager;
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Bitmap;
+import android.database.Cursor;
 import android.net.Uri;
 import android.os.Bundle;
+import android.provider.OpenableColumns;
+import android.widget.Toast;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -21,6 +23,7 @@ import org.json.JSONObject;
 public class MainActivity extends Activity {
 
     private static final int REQ_FILE = 1;
+    private static final int REQ_PICK = 2;
     private WebView web;
     private ValueCallback<Uri[]> filePathCb;
     private String pendingShared = null;
@@ -130,6 +133,38 @@ public class MainActivity extends Activity {
             }
             return;
         }
+        if (requestCode == REQ_PICK) {
+            if (resultCode == RESULT_OK && data != null && data.getData() != null) {
+                Uri uri = data.getData();
+                try {
+                    getContentResolver().takePersistableUriPermission(uri, Intent.FLAG_GRANT_READ_URI_PERMISSION);
+                } catch (Exception ignored) {
+                }
+                String name = "";
+                Cursor c = null;
+                try {
+                    c = getContentResolver().query(uri, null, null, null, null);
+                    if (c != null && c.moveToFirst()) {
+                        int idx = c.getColumnIndex(OpenableColumns.DISPLAY_NAME);
+                        if (idx >= 0) name = c.getString(idx);
+                    }
+                } catch (Exception ignored) {
+                } finally {
+                    if (c != null) c.close();
+                }
+                String mime = getContentResolver().getType(uri);
+                if (mime == null) mime = "*/*";
+                final String js = "window.onPicked && window.onPicked(" + JSONObject.quote(uri.toString()) + ","
+                        + JSONObject.quote(name == null ? "" : name) + "," + JSONObject.quote(mime) + ");";
+                web.post(new Runnable() {
+                    @Override
+                    public void run() {
+                        web.evaluateJavascript(js, null);
+                    }
+                });
+            }
+            return;
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -150,6 +185,40 @@ public class MainActivity extends Activity {
                 @Override
                 public void run() {
                     openExternal(url);
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void pickFile() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Intent i = new Intent(Intent.ACTION_OPEN_DOCUMENT);
+                        i.addCategory(Intent.CATEGORY_OPENABLE);
+                        i.setType("*/*");
+                        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_GRANT_PERSISTABLE_URI_PERMISSION);
+                        startActivityForResult(i, REQ_PICK);
+                    } catch (Exception ignored) {
+                    }
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void openFile(final String uri, final String mime) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Intent i = new Intent(Intent.ACTION_VIEW);
+                        i.setDataAndType(Uri.parse(uri), (mime == null || mime.isEmpty()) ? "*/*" : mime);
+                        i.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(i);
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, "Impossible d'ouvrir le fichier / تعذر فتح الملف", Toast.LENGTH_LONG).show();
+                    }
                 }
             });
         }
