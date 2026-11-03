@@ -10,6 +10,13 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.OpenableColumns;
 import android.widget.Toast;
+import android.os.Build;
+import android.speech.RecognizerIntent;
+import android.content.pm.ShortcutInfo;
+import android.content.pm.ShortcutManager;
+import android.graphics.drawable.Icon;
+import org.json.JSONArray;
+import java.util.ArrayList;
 import android.webkit.JavascriptInterface;
 import android.webkit.ValueCallback;
 import android.webkit.WebChromeClient;
@@ -24,6 +31,9 @@ public class MainActivity extends Activity {
 
     private static final int REQ_FILE = 1;
     private static final int REQ_PICK = 2;
+    private static final int REQ_VOICE = 3;
+    private static final String ACTION_VOICE = "com.meslinks.app.VOICE";
+    private boolean pendingVoice = false;
     private WebView web;
     private ValueCallback<Uri[]> filePathCb;
     private String pendingShared = null;
@@ -54,6 +64,10 @@ public class MainActivity extends Activity {
                 if (pendingShared != null) {
                     pushShared(pendingShared);
                     pendingShared = null;
+                }
+                if (pendingVoice) {
+                    pendingVoice = false;
+                    pushVoice();
                 }
             }
 
@@ -102,7 +116,20 @@ public class MainActivity extends Activity {
             }
             // évite de rejouer le partage à la rotation
             intent.setAction(Intent.ACTION_MAIN);
+        } else if (ACTION_VOICE.equals(intent.getAction())) {
+            if (pageLoaded) pushVoice();
+            else pendingVoice = true;
+            intent.setAction(Intent.ACTION_MAIN);
         }
+    }
+
+    private void pushVoice() {
+        web.post(new Runnable() {
+            @Override
+            public void run() {
+                web.evaluateJavascript("window.startVoice && window.startVoice();", null);
+            }
+        });
     }
 
     private void pushShared(String text) {
@@ -165,6 +192,23 @@ public class MainActivity extends Activity {
             }
             return;
         }
+        if (requestCode == REQ_VOICE) {
+            if (resultCode == RESULT_OK && data != null) {
+                ArrayList<String> res = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
+                if (res != null && !res.isEmpty()) {
+                    JSONArray arr = new JSONArray();
+                    for (String x : res) arr.put(x);
+                    final String js = "window.onVoice && window.onVoice(" + arr.toString() + ");";
+                    web.post(new Runnable() {
+                        @Override
+                        public void run() {
+                            web.evaluateJavascript(js, null);
+                        }
+                    });
+                }
+            }
+            return;
+        }
         super.onActivityResult(requestCode, resultCode, data);
     }
 
@@ -218,6 +262,53 @@ public class MainActivity extends Activity {
                         startActivity(i);
                     } catch (Exception e) {
                         Toast.makeText(MainActivity.this, "Impossible d'ouvrir le fichier / تعذر فتح الملف", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void listen(final String lang) {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        Intent i = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+                        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL, RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
+                        i.putExtra(RecognizerIntent.EXTRA_LANGUAGE, lang);
+                        i.putExtra(RecognizerIntent.EXTRA_MAX_RESULTS, 5);
+                        i.putExtra(RecognizerIntent.EXTRA_PROMPT, "Parlez… / تكلم…");
+                        startActivityForResult(i, REQ_VOICE);
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, "Reconnaissance vocale indisponible / الميزة غير متاحة", Toast.LENGTH_LONG).show();
+                    }
+                }
+            });
+        }
+
+        @JavascriptInterface
+        public void pinVoice() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try {
+                        if (Build.VERSION.SDK_INT >= 26) {
+                            ShortcutManager sm = getSystemService(ShortcutManager.class);
+                            if (sm != null && sm.isRequestPinShortcutSupported()) {
+                                Intent in = new Intent(MainActivity.this, MainActivity.class);
+                                in.setAction(ACTION_VOICE);
+                                ShortcutInfo info = new ShortcutInfo.Builder(MainActivity.this, "voice")
+                                        .setShortLabel("Voix Mes Liens")
+                                        .setIcon(Icon.createWithResource(MainActivity.this, R.drawable.ic_mic))
+                                        .setIntent(in)
+                                        .build();
+                                sm.requestPinShortcut(info, null);
+                                return;
+                            }
+                        }
+                        Toast.makeText(MainActivity.this, "Maintenez l'icône de l'application, puis le raccourci vocal / اضغط مطولاً على أيقونة التطبيق", Toast.LENGTH_LONG).show();
+                    } catch (Exception e) {
+                        Toast.makeText(MainActivity.this, "Raccourci indisponible / الاختصار غير متاح", Toast.LENGTH_LONG).show();
                     }
                 }
             });

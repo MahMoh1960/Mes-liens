@@ -65,6 +65,7 @@ textarea.f{min-height:90px;resize:vertical}
 <header>
   <div class="top">
     <h1 id="hTitle">Mes Liens</h1>
+    <button class="ib" id="bMic">🎤</button>
     <button class="ib" id="bLang">ع</button>
     <button class="ib" id="bMenu">⋮</button>
   </div>
@@ -94,6 +95,7 @@ textarea.f{min-height:90px;resize:vertical}
   <button class="mi" id="mExport"></button>
   <button class="mi" id="mImport"></button>
   <button class="mi" id="mCats"></button>
+  <button class="mi" id="mPin"></button>
   <div class="btns"><button id="mClose"></button></div>
 </div></div>
 
@@ -118,6 +120,12 @@ textarea.f{min-height:90px;resize:vertical}
   <div class="btns"><button id="moClose"></button></div>
 </div></div>
 
+<div class="ov" id="ovVoice"><div class="sheet">
+  <h2 id="vTitle"></h2>
+  <div id="vList"></div>
+  <div class="btns"><button id="vClose"></button></div>
+</div></div>
+
 <div class="ov" id="ovConfirm"><div class="sheet">
   <h2 id="qText"></h2>
   <div class="btns"><button id="qNo"></button><button class="pri" id="qYes"></button></div>
@@ -135,7 +143,7 @@ save:'Enregistrer',cancel:'Annuler',open:'Ouvrir',copy:'Copier',del:'Supprimer',
 copied:'Lien copié',saved:'Enregistré',deleted:'Supprimé',invalid:'Adresse invalide',dup:'Ce lien existe déjà',
 empty:'Aucun lien pour le moment.<br>Appuyez sur + ou utilisez « Partager » depuis une autre application.',
 sRecent:'Plus récents',sAlpha:'A → Z',sCat:'Par catégorie',menu:'Menu',export:'Exporter (sauvegarde)',import:'Importer une sauvegarde',cats:'Gérer les catégories',
-pick:'📁 Choisir un fichier du téléphone',unpick:'🌐 Utiliser plutôt une adresse web',det:'De quoi s’agit-il ?',editBtn:'Modifier',catNewPh:'Nom de la nouvelle catégorie',catAdd:'Ajouter',catExists:'Cette catégorie existe déjà',close:'Fermer',importTitle:'Importer',chooseFile:'Choisir un fichier',paste:'… ou coller le contenu ici',go:'Importer',imported:'lien(s) ajouté(s)',bad:'Fichier non valide',
+pick:'📁 Choisir un fichier du téléphone',unpick:'🌐 Utiliser plutôt une adresse web',det:'De quoi s’agit-il ?',editBtn:'Modifier',vMany:'Plusieurs liens trouvés pour',vSearch:'🎤 Recherche Google : ',voiceFail:'Rien entendu, réessayez',voiceNA:'Voix indisponible',pin:'🎤 Raccourci vocal sur l’écran d’accueil',catNewPh:'Nom de la nouvelle catégorie',catAdd:'Ajouter',catExists:'Cette catégorie existe déjà',close:'Fermer',importTitle:'Importer',chooseFile:'Choisir un fichier',paste:'… ou coller le contenu ici',go:'Importer',imported:'lien(s) ajouté(s)',bad:'Fichier non valide',
 links:'lien(s)',catDelq:'Supprimer cette catégorie ? Ses liens passeront dans « Divers ».'},
 ar:{title:'روابطي',search:'ابحث عن رابط…',all:'الكل',favs:'★ المفضلة',add:'إضافة رابط',edit:'تعديل الرابط',
 url:'العنوان (URL)',name:'العنوان',desc:'ما هو موضوعه؟',cat:'الفئة',newcat:'+ فئة جديدة…',newcatph:'اسم الفئة',tags:'وسوم (مفصولة بفواصل)',
@@ -143,7 +151,7 @@ save:'حفظ',cancel:'إلغاء',open:'فتح',copy:'نسخ',del:'حذف',delq:
 copied:'تم نسخ الرابط',saved:'تم الحفظ',deleted:'تم الحذف',invalid:'عنوان غير صالح',dup:'هذا الرابط موجود مسبقاً',
 empty:'لا توجد روابط حالياً.<br>اضغط + أو استعمل «مشاركة» من تطبيق آخر.',
 sRecent:'الأحدث',sAlpha:'أ → ي',sCat:'حسب الفئة',menu:'القائمة',export:'تصدير (نسخة احتياطية)',import:'استيراد نسخة احتياطية',cats:'إدارة الفئات',
-pick:'📁 اختيار ملف من الهاتف',unpick:'🌐 استعمال عنوان ويب بدلاً من ذلك',det:'ما هو موضوعه؟',editBtn:'تعديل',catNewPh:'اسم الفئة الجديدة',catAdd:'إضافة',catExists:'هذه الفئة موجودة مسبقاً',close:'إغلاق',importTitle:'استيراد',chooseFile:'اختيار ملف',paste:'… أو الصق المحتوى هنا',go:'استيراد',imported:'رابط مضاف',bad:'ملف غير صالح',
+pick:'📁 اختيار ملف من الهاتف',unpick:'🌐 استعمال عنوان ويب بدلاً من ذلك',det:'ما هو موضوعه؟',editBtn:'تعديل',vMany:'عدة روابط لـ',vSearch:'🎤 بحث في غوغل: ',voiceFail:'لم أسمع شيئاً، أعد المحاولة',voiceNA:'الصوت غير متاح',pin:'🎤 اختصار صوتي على الشاشة الرئيسية',catNewPh:'اسم الفئة الجديدة',catAdd:'إضافة',catExists:'هذه الفئة موجودة مسبقاً',close:'إغلاق',importTitle:'استيراد',chooseFile:'اختيار ملف',paste:'… أو الصق المحتوى هنا',go:'استيراد',imported:'رابط مضاف',bad:'ملف غير صالح',
 links:'رابط',catDelq:'حذف هذه الفئة؟ ستنتقل روابطها إلى «Divers».'}
 };
 const NETS=[
@@ -200,7 +208,7 @@ function applyLang(){
   $('#mTitle').textContent=t('menu');$('#mExport').textContent=t('export');$('#mImport').textContent=t('import');$('#mCats').textContent=t('cats');$('#mClose').textContent=t('close');
   $('#iTitle').textContent=t('importTitle');$('#iFileL').textContent=t('chooseFile');$('#iPasteL').textContent=t('paste');$('#iCancel').textContent=t('cancel');$('#iGo').textContent=t('go');
   $('#cTitle').textContent=t('cats');$('#cClose').textContent=t('close');$('#cNew').placeholder=t('catNewPh');$('#cAdd').textContent=t('catAdd');
-  $('#qNo').textContent=t('no');$('#qYes').textContent=t('yes');
+  $('#qNo').textContent=t('no');$('#mPin').textContent=t('pin');$('#vClose').textContent=t('close');$('#qYes').textContent=t('yes');
   $('#moEdit').textContent='✎ '+t('editBtn');$('#moCopy').textContent='⧉ '+t('copy');$('#moDel').textContent='🗑 '+t('del');$('#moClose').textContent=t('close');
 }
 function render(){
@@ -378,6 +386,81 @@ window.onBack=function(){
   if(o){o.classList.remove('show');if(o.id==='ovCats')render();return true;}
   return false;
 };
+
+// ===== Commande vocale =====
+const VNORM=s=>String(s||'').toLowerCase().normalize('NFD').replace(/[̀-ًͯ-ٰٟ]/g,'').replace(/[أإآ]/g,'ا').replace(/ة/g,'ه').replace(/ى/g,'ي').replace(/[^a-z0-9؀-ۿ\s]/g,' ').replace(/\s+/g,' ').trim();
+const FILL=new Set(('ouvre ouvrir ouvrez va aller allez sur lance lancer affiche afficher montre montrer mon ma mes le la les l un une du de des lien liens site page fichier application appli moi svp please s il te plait vous plait '+
+ 'افتح افتحلي افتحي اذهب الى شغل موقع رابط الرابط ملف لي من فضلك').split(' '));
+const SEARCH=new Set('cherche chercher recherche rechercher trouve trouver search ابحث بحث دور'.split(' '));
+const SRCFILL=new Set('sur google عن على غوغل جوجل قوقل pour'.split(' '));
+const KNOWN=[
+[['google','غوغل','جوجل','قوقل'],'https://www.google.com'],
+[['youtube','يوتيوب','يوتوب'],'https://www.youtube.com'],
+[['facebook','فيسبوك','فايسبوك','فيس بوك'],'https://www.facebook.com'],
+[['x','twitter','تويتر','اكس'],'https://x.com'],
+[['instagram','انستغرام','انستجرام','انستا'],'https://www.instagram.com'],
+[['whatsapp','واتساب','واتس اب'],'https://web.whatsapp.com'],
+[['wikipedia','ويكيبيديا','ويكيبيدا'],'https://www.wikipedia.org'],
+[['linkedin','لينكدان','لينكد ان'],'https://www.linkedin.com'],
+[['telegram','تيليغرام','تيليجرام'],'https://web.telegram.org'],
+[['tiktok','تيك توك','تيكتوك'],'https://www.tiktok.com'],
+[['gmail','جيميل'],'https://mail.google.com'],
+[['github','جيت هاب'],'https://github.com']
+];
+const inc=(str,w)=>w.length<3?(' '+str+' ').includes(' '+w+' '):str.includes(w);
+function gsearch(q,heard){
+  q=String(q||'').trim();if(!q)return false;
+  toast(t('vSearch')+q);openUrl('https://www.google.com/search?q='+encodeURIComponent(q));return true;
+}
+function pickLink(best,heard){
+  if(best.length===1){toast('🎤 '+best[0].title);openLink(best[0]);return true;}
+  $('#vTitle').textContent=t('vMany')+' « '+heard+' »';
+  $('#vList').innerHTML=best.slice(0,12).map(l=>`<button class="mi" data-id="${l.id}">${esc(l.title)}</button>`).join('');
+  show('#ovVoice');return true;
+}
+function handleVoice(heard,final){
+  const tk=VNORM(heard).split(' ').filter(Boolean);
+  if(!tk.length)return false;
+  if(SEARCH.has(tk[0])){
+    const q=tk.slice(1).filter(w=>!SRCFILL.has(w)).join(' ');
+    return gsearch(q||tk.slice(1).join(' '),heard);
+  }
+  let q=tk.filter(w=>!FILL.has(w));if(!q.length)q=tk;
+  const qs=q.join(' ');
+  const scored=[];
+  S.links.forEach(l=>{
+    const ti=VNORM(l.title);
+    const hay=VNORM([l.title,l.cat,(l.tags||[]).join(' '),l.desc,l.file?l.fname:host(l.url)].join(' '));
+    const sc=ti===qs?4:(inc(ti,qs)||(ti.length>2&&qs.includes(ti)))?3:q.every(w=>inc(ti,w))?2:q.every(w=>inc(hay,w))?1:0;
+    if(sc)scored.push([sc,l]);
+  });
+  const top=scored.reduce((m,x)=>Math.max(m,x[0]),0);
+  const best=scored.filter(x=>x[0]===top).map(x=>x[1]);
+  if(top>=2)return pickLink(best,heard);
+  const site=KNOWN.find(k=>k[0].some(a=>qs===a||(' '+qs+' ').includes(' '+a+' ')));
+  if(site){toast('🎤 '+site[0][0]);openUrl(site[1]);return true;}
+  if(top===1)return pickLink(best,heard);
+  if(final)return gsearch(qs,heard);
+  return false;
+}
+window.onVoice=function(arr){
+  arr=(arr||[]).map(String).filter(Boolean);
+  if(!arr.length){toast(t('voiceFail'));return;}
+  for(const h of arr){if(handleVoice(h,false))return;}
+  handleVoice(arr[0],true);
+};
+window.startVoice=function(){
+  ['ovMenu','ovImport','ovCats','ovConfirm','ovMore','ovForm','ovVoice'].forEach(i=>hide('#'+i));
+  if(window.Android&&Android.listen)Android.listen(S.lang==='ar'?'ar-MA':'fr-FR');
+  else toast(t('voiceNA'));
+};
+$('#bMic').onclick=()=>window.startVoice();
+$('#mPin').onclick=()=>{hide('#ovMenu');if(window.Android&&Android.pinVoice)Android.pinVoice();else toast(t('voiceNA'));};
+$('#vClose').onclick=()=>hide('#ovVoice');
+$('#vList').addEventListener('click',e=>{
+  const b=e.target.closest('button');if(!b)return;
+  const l=S.links.find(x=>x.id===b.dataset.id);hide('#ovVoice');if(l)openLink(l);
+});
 
 applyLang();render();
 </script>
